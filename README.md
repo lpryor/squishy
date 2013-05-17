@@ -1,5 +1,5 @@
 Squishy: Scala DSL / Bindings for SQS (Amazon Web Services)
-===========================================================
+-----------------------------------------------------------
 
 Squishy is a Scala library for interacting with the [Amazon Simple Queue Service](http://aws.amazon.com/sqs/) (SQS)
 messaging API. The goals of this project are to provide a concise interface for developers to interact with SQS and at
@@ -17,7 +17,7 @@ There are two main components to the Squishy library:
     
 API Documentation is [available online](http://lpryor.github.io/squishy/#squishy.package).
 
-See [CHANGELOG] for the project history.
+See [CHANGELOG](CHANGELOG) for the project history.
 
 ### Building ###
 
@@ -31,7 +31,7 @@ You need SBT 0.12.x or higher.
 
 ### Examples ###
 
-See [src/test/scala/squishy/examples] for examples of Squishy in action.
+See [src/test/scala/squishy/examples](src/test/scala/squishy/examples) for examples of Squishy in action.
 
 ### Target platform ###
 
