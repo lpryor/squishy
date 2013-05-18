@@ -76,8 +76,8 @@ object Callback {
   def empty[T]: Callback[T] = _empty
 
   /**
-   * Creates a callback invokes the specified function on either success or failure, passing in an accessor that will
-   * either return the successful result or throw the error exception.
+   * Creates a callback that invokes the specified function on either success or failure, passing in an accessor that
+   * will either return the successful result or throw the error exception.
    *
    * An example of creating a callback with this method:
    * {{{
@@ -106,8 +106,8 @@ object Callback {
   }
 
   /**
-   * Creates a callback invokes the specified function on either success or failure, passing in an `Option` that will
-   * either contain the successful result or be `None`.
+   * Creates a callback that invokes the specified function on either success or failure, passing in an `Option` that
+   * will either contain the successful result or be `None`.
    *
    * An example of creating a callback with this method:
    * {{{
@@ -134,8 +134,8 @@ object Callback {
   }
 
   /**
-   * Creates a callback invokes the specified function on either success or failure, passing in an `Either` that will be
-   * either a `Left` containing the successful result or a `Right` containing the error exception.
+   * Creates a callback that invokes the specified function on either success or failure, passing in an `Either` that
+   * will be either a `Left` containing the successful result or a `Right` containing the error exception.
    *
    * An example of creating a callback with this method:
    * {{{
@@ -164,7 +164,7 @@ object Callback {
   }
 
   /**
-   * Creates a callback invokes the `fs` function on success or the `fe` function on failure.
+   * Creates a callback that invokes the `fs` function on success or the `fe` function on failure.
    *
    * An example of creating a callback with this method:
    * {{{
