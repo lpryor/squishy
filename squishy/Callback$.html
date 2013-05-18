@@ -135,9 +135,9 @@
         <span class="name">apply</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="f">f: (() ⇒ T) ⇒ <span name="scala.Unit" class="extype">Unit</span></span>)</span><span class="result">: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[T]</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Creates a callback invokes the specified function on either success or failure, passing in an accessor that will
-either return the successful result or throw the error exception.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a callback invokes the specified function on either success or failure, passing in an accessor that will
-either return the successful result or throw the error exception.</p><p>An example of creating a callback with this method:</p><pre>
+      <p class="shortcomment cmt">Creates a callback that invokes the specified function on either success or failure, passing in an accessor that
+will either return the successful result or throw the error exception.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a callback that invokes the specified function on either success or failure, passing in an accessor that
+will either return the successful result or throw the error exception.</p><p>An example of creating a callback with this method:</p><pre>
 <span class="kw">val</span> callback = Callback[<span class="std">String</span>] { result <span class="kw">=&gt;</span>
   <span class="kw">try</span> {
     doSomethingWith(result())
@@ -197,9 +197,9 @@ either return the successful result or throw the error exception.</p><p>An examp
         <span class="name">either</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="f">f: (<span name="scala.Either" class="extype">Either</span>[T, Exception]) ⇒ <span name="scala.Unit" class="extype">Unit</span></span>)</span><span class="result">: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[T]</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Creates a callback invokes the specified function on either success or failure, passing in an <code>Either</code> that will be
-either a <code>Left</code> containing the successful result or a <code>Right</code> containing the error exception.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a callback invokes the specified function on either success or failure, passing in an <code>Either</code> that will be
-either a <code>Left</code> containing the successful result or a <code>Right</code> containing the error exception.</p><p>An example of creating a callback with this method:</p><pre>
+      <p class="shortcomment cmt">Creates a callback that invokes the specified function on either success or failure, passing in an <code>Either</code> that
+will be either a <code>Left</code> containing the successful result or a <code>Right</code> containing the error exception.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a callback that invokes the specified function on either success or failure, passing in an <code>Either</code> that
+will be either a <code>Left</code> containing the successful result or a <code>Right</code> containing the error exception.</p><p>An example of creating a callback with this method:</p><pre>
 <span class="kw">val</span> callback = Callback.either[<span class="std">String</span>] { result <span class="kw">=&gt;</span>
   result <span class="kw">match</span> {
     <span class="kw">case</span> Left(value) <span class="kw">=&gt;</span>
@@ -271,7 +271,7 @@ either a <code>Left</code> containing the successful result or a <code>Right</co
         <span class="name">fold</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="fs">fs: (T) ⇒ <span name="scala.Unit" class="extype">Unit</span></span>, <span name="fe">fe: (Exception) ⇒ <span name="scala.Unit" class="extype">Unit</span></span>)</span><span class="result">: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[T]</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Creates a callback invokes the <code>fs</code> function on success or the <code>fe</code> function on failure.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a callback invokes the <code>fs</code> function on success or the <code>fe</code> function on failure.</p><p>An example of creating a callback with this method:</p><pre>
+      <p class="shortcomment cmt">Creates a callback that invokes the <code>fs</code> function on success or the <code>fe</code> function on failure.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a callback that invokes the <code>fs</code> function on success or the <code>fe</code> function on failure.</p><p>An example of creating a callback with this method:</p><pre>
 <span class="kw">val</span> callback = Callback.fold[<span class="std">String</span>](
   v <span class="kw">=&gt;</span> doSomethingWith(v),
   e <span class="kw">=&gt;</span> log(<span class="lit">"Something has gone wrong: "</span> + e.getMessage)
@@ -360,9 +360,9 @@ either a <code>Left</code> containing the successful result or a <code>Right</co
         <span class="name">opt</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="f">f: (<span name="scala.Option" class="extype">Option</span>[T]) ⇒ <span name="scala.Unit" class="extype">Unit</span></span>)</span><span class="result">: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[T]</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">Creates a callback invokes the specified function on either success or failure, passing in an <code>Option</code> that will
-either contain the successful result or be <code>None</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a callback invokes the specified function on either success or failure, passing in an <code>Option</code> that will
-either contain the successful result or be <code>None</code>.</p><p>An example of creating a callback with this method:</p><pre>
+      <p class="shortcomment cmt">Creates a callback that invokes the specified function on either success or failure, passing in an <code>Option</code> that
+will either contain the successful result or be <code>None</code>.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a callback that invokes the specified function on either success or failure, passing in an <code>Option</code> that
+will either contain the successful result or be <code>None</code>.</p><p>An example of creating a callback with this method:</p><pre>
 <span class="kw">val</span> callback = Callback.opt[<span class="std">String</span>] { result <span class="kw">=&gt;</span>
   <span class="kw">if</span> (result.isDefined)
     doSomethingWith(result.get)
