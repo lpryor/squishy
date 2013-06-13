@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>squishy.Message</title>
+          <title>squishy.Queue.BatchEntry</title>
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link type="text/css" media="screen" rel="stylesheet" href="../lib/template.css" />
@@ -12,31 +12,27 @@
       <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
     
         </head>
-        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="type">
+        <body onload="sh_highlightDocument('../lib/', '.min.js');" class="value">
       <div id="definition">
-        <a title="Go to companion" href="Message$.html"><img src="../lib/trait_to_object_big.png" /></a>
-        <p id="owner"><a name="squishy" class="extype" href="package.html">squishy</a></p>
-        <h1><a title="Go to companion" href="Message$.html">Message</a></h1>
+        <a title="Go to companion" href="Queue$BatchEntry.html"><img src="../lib/object_to_trait_big.png" /></a>
+        <p id="owner"><a name="squishy" class="extype" href="package.html">squishy</a>.<a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></p>
+        <h1><a title="Go to companion" href="Queue$BatchEntry.html">BatchEntry</a></h1>
       </div>
 
       <h4 class="signature" id="signature">
       <span class="modifier_kind">
-        <span class="modifier">sealed </span>
-        <span class="kind">trait</span>
+        <span class="modifier"></span>
+        <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">Message</span><span class="tparams">[<span name="M">+M</span>]</span><span class="result"> extends AnyRef</span>
+        <span class="name">BatchEntry</span><span class="result"> extends AnyRef</span>
       </span>
       </h4>
       
-      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Base type for objects that contain information about messages sent to and received from SQS queues.
-</p></div><dl class="paramcmts block"><dt class="tparam">M</dt><dd class="cmt"><p>The type of body contained by this message.
-</p></dd></dl><div class="toggleContainer block">
+      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Definitions of the supported batch entry type classes.
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent">AnyRef, <span name="scala.Any" class="extype">Any</span></div>
-        </div><div class="toggleContainer block">
-          <span class="toggle">Known Subclasses</span>
-          <div class="subClasses hiddenContent"><a name="squishy.Message.Changed" class="extype" href="Message$$Changed.html">Changed</a>, <a name="squishy.Message.Deleted" class="extype" href="Message$$Deleted.html">Deleted</a>, <a name="squishy.Message.Error" class="extype" href="Message$$Error.html">Error</a>, <a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>, <a name="squishy.Message.Sent" class="extype" href="Message$$Sent.html">Sent</a></div>
         </div></div>
     
 
@@ -50,7 +46,7 @@
               <span class="filtertype">Inherited</span>
               <ol><li class="hideall out"><span>Hide All</span></li>
               <li class="showall in"><span>Show all</span></li></ol>
-              <ol id="linearization"><li name="squishy.Message" class="in"><span>Message</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+              <ol id="linearization"><li name="squishy.Queue.BatchEntry" class="in"><span>BatchEntry</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
             </div>
         <div id="visbl">
             <span class="filtertype">Visibility</span>
@@ -64,25 +60,10 @@
 
         
 
-        <div class="values members" id="values">
-              <h3>Abstract Value Members</h3>
-              <ol><li visbl="pub" name="squishy.Message#body" data-isabs="true">
-      <a id="body:M"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">body</span><span class="result">: M</span>
-      </span>
-      </h4>
-      <p class="shortcomment cmt">The body of this message.</p>
-    </li></ol>
-            </div>
+        
 
         <div class="values members" id="values">
-              <h3>Concrete Value Members</h3>
+              <h3>Value Members</h3>
               <ol><li visbl="pub" name="scala.AnyRef#!=" data-isabs="false">
       <a id="!=(AnyRef):Boolean"></a>
       <h4 class="signature">
@@ -143,6 +124,30 @@
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="squishy.Queue.BatchEntry.NoDelay" data-isabs="false">
+      <a id="NoDelay:NoDelay"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Queue$BatchEntry$$NoDelay$.html"><span class="name">NoDelay</span></a><span class="result"> extends BatchEntry[M] with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Type class for batch entries with no initial delay.</p>
+    </li><li visbl="pub" name="squishy.Queue.BatchEntry.WithDelay" data-isabs="false">
+      <a id="WithDelay:WithDelay"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Queue$BatchEntry$$WithDelay$.html"><span class="name">WithDelay</span></a><span class="result"> extends BatchEntry[(M, Int)] with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Type class for batch entries with an initial delay.</p>
     </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
       <a id="asInstanceOf[T0]:T0"></a>
       <h4 class="signature">

@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html>
         <head>
-          <title>squishy.Message</title>
+          <title>squishy.Queue.BatchEntry</title>
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link type="text/css" media="screen" rel="stylesheet" href="../lib/template.css" />
@@ -14,9 +14,9 @@
         </head>
         <body onload="sh_highlightDocument('../lib/', '.min.js');" class="type">
       <div id="definition">
-        <a title="Go to companion" href="Message$.html"><img src="../lib/trait_to_object_big.png" /></a>
-        <p id="owner"><a name="squishy" class="extype" href="package.html">squishy</a></p>
-        <h1><a title="Go to companion" href="Message$.html">Message</a></h1>
+        <img src="../lib/trait_big.png" />
+        <p id="owner"><a name="squishy" class="extype" href="package.html">squishy</a>.<a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></p>
+        <h1>BatchEntry</h1>
       </div>
 
       <h4 class="signature" id="signature">
@@ -25,18 +25,17 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">Message</span><span class="tparams">[<span name="M">+M</span>]</span><span class="result"> extends AnyRef</span>
+        <span class="name">BatchEntry</span><span class="tparams">[<span name="E">-E</span>]</span><span class="result"> extends AnyRef</span>
       </span>
       </h4>
       
-      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Base type for objects that contain information about messages sent to and received from SQS queues.
-</p></div><dl class="paramcmts block"><dt class="tparam">M</dt><dd class="cmt"><p>The type of body contained by this message.
-</p></dd></dl><div class="toggleContainer block">
+      <div class="fullcommenttop" id="comment"><div class="comment cmt"><p>Base class for type classes that identify entries in batch operations.
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent">AnyRef, <span name="scala.Any" class="extype">Any</span></div>
         </div><div class="toggleContainer block">
           <span class="toggle">Known Subclasses</span>
-          <div class="subClasses hiddenContent"><a name="squishy.Message.Changed" class="extype" href="Message$$Changed.html">Changed</a>, <a name="squishy.Message.Deleted" class="extype" href="Message$$Deleted.html">Deleted</a>, <a name="squishy.Message.Error" class="extype" href="Message$$Error.html">Error</a>, <a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>, <a name="squishy.Message.Sent" class="extype" href="Message$$Sent.html">Sent</a></div>
+          <div class="subClasses hiddenContent"><a name="squishy.Queue.BatchEntry.NoDelay" class="extype" href="Queue$BatchEntry$$NoDelay$.html">NoDelay</a>, <a name="squishy.Queue.BatchEntry.WithDelay" class="extype" href="Queue$BatchEntry$$WithDelay$.html">WithDelay</a></div>
         </div></div>
     
 
@@ -50,7 +49,7 @@
               <span class="filtertype">Inherited</span>
               <ol><li class="hideall out"><span>Hide All</span></li>
               <li class="showall in"><span>Show all</span></li></ol>
-              <ol id="linearization"><li name="squishy.Message" class="in"><span>Message</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
+              <ol id="linearization"><li name="squishy.Queue.BatchEntry" class="in"><span>BatchEntry</span></li><li name="scala.AnyRef" class="in"><span>AnyRef</span></li><li name="scala.Any" class="in"><span>Any</span></li></ol>
             </div>
         <div id="visbl">
             <span class="filtertype">Visibility</span>
@@ -66,18 +65,30 @@
 
         <div class="values members" id="values">
               <h3>Abstract Value Members</h3>
-              <ol><li visbl="pub" name="squishy.Message#body" data-isabs="true">
-      <a id="body:M"></a>
+              <ol><li visbl="pub" name="squishy.Queue.BatchEntry#body" data-isabs="true">
+      <a id="body(E):M"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">body</span><span class="result">: M</span>
+        <span class="name">body</span><span class="params">(<span name="entry">entry: E</span>)</span><span class="result">: M</span>
       </span>
       </h4>
-      <p class="shortcomment cmt">The body of this message.</p>
+      <p class="shortcomment cmt">Extracts the message body from an entry.</p>
+    </li><li visbl="pub" name="squishy.Queue.BatchEntry#delaySeconds" data-isabs="true">
+      <a id="delaySeconds(E):Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">delaySeconds</span><span class="params">(<span name="entry">entry: E</span>)</span><span class="result">: <span name="scala.Int" class="extype">Int</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Extracts the number of delay seconds from an entry.</p>
     </li></ol>
             </div>
 

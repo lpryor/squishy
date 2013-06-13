@@ -60,7 +60,22 @@ URLs in the class description of <a name="squishy.Queue" class="extype" href="Qu
         <div id="allMembers">
         
 
-        
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="squishy.Queue.BatchEntry" data-isabs="true">
+      <a id="BatchEntry:BatchEntry[E]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Queue$BatchEntry.html"><span class="name">BatchEntry</span></a><span class="tparams">[<span name="E">-E</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Base class for type classes that identify entries in batch operations.</p>
+    </li></ol>
+            </div>
 
         <div class="values members" id="values">
               <h3>Abstract Value Members</h3>
@@ -165,6 +180,18 @@ URLs in the class description of <a name="squishy.Queue" class="extype" href="Qu
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="squishy.Queue.BatchEntry" data-isabs="false">
+      <a id="BatchEntry:BatchEntry"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Queue$BatchEntry$.html"><span class="name">BatchEntry</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Definitions of the supported batch entry type classes.</p>
     </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
       <a id="asInstanceOf[T0]:T0"></a>
       <h4 class="signature">
@@ -191,6 +218,30 @@ URLs in the class description of <a name="squishy.Queue" class="extype" href="Qu
       <p class="shortcomment cmt">Returns the specified attributes of this queue if it exists.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the specified attributes of this queue if it exists.
 </p></div><dl class="paramcmts block"><dt class="param">keys</dt><dd class="cmt"><p>The keys that identify the attributes to return.</p></dd><dt class="param">callback</dt><dd class="cmt"><p>The callback that should be notified when the operation completes.
 </p></dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#changeMessageVisibilityBatchRequest" data-isabs="false">
+      <a id="changeMessageVisibilityBatchRequest(String,Seq[(Receipt[M], Int)]):ChangeMessageVisibilityBatchRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeMessageVisibilityBatchRequest</span><span class="params">(<span name="queueUrl">queueUrl: String</span>, <span name="entries">entries: Seq[(<a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M], <span name="scala.Int" class="extype">Int</span>)]</span>)</span><span class="result">: <span name="com.amazonaws.services.sqs.model.ChangeMessageVisibilityBatchRequest" class="extype">ChangeMessageVisibilityBatchRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>ChangeMessageVisibilityBatchRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>ChangeMessageVisibilityBatchRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#changeMessageVisibilityBatchResult" data-isabs="false">
+      <a id="changeMessageVisibilityBatchResult(ChangeMessageVisibilityBatchResult,Seq[(Receipt[M], Int)]):Seq[Message[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeMessageVisibilityBatchResult</span><span class="params">(<span name="result">result: <span name="com.amazonaws.services.sqs.model.ChangeMessageVisibilityBatchResult" class="extype">ChangeMessageVisibilityBatchResult</span></span>, <span name="entries">entries: Seq[(<a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M], <span name="scala.Int" class="extype">Int</span>)]</span>)</span><span class="result">: Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>ChangeMessageVisibilityBatchResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>ChangeMessageVisibilityBatchResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
     </li><li visbl="prt" name="squishy.Queue#changeMessageVisibilityRequest" data-isabs="false">
       <a id="changeMessageVisibilityRequest(String,Receipt[M],Int):ChangeMessageVisibilityRequest"></a>
       <h4 class="signature">
@@ -203,19 +254,45 @@ URLs in the class description of <a name="squishy.Queue" class="extype" href="Qu
       </span>
       </h4>
       <p class="shortcomment cmt">Utility method that constructs a <code>ChangeMessageVisibilityRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>ChangeMessageVisibilityRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
-    </li><li visbl="pub" name="squishy.AsyncQueue#changeVisibilityAsync" data-isabs="false">
-      <a id="changeVisibilityAsync(Receipt[M],Int,Callback[Unit]):Future[Unit]"></a>
+    </li><li visbl="prt" name="squishy.Queue#changeMessageVisibilityResult" data-isabs="false">
+      <a id="changeMessageVisibilityResult(Receipt[M]):Changed[M]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">changeVisibilityAsync</span><span class="params">(<span name="receipt">receipt: <a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]</span>, <span name="visibilityTimeout">visibilityTimeout: <span name="scala.Int" class="extype">Int</span></span>, <span name="callback">callback: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[<span name="scala.Unit" class="extype">Unit</span>] = <span class="symbol"><span class="name"><a href="Callback$.html">Callback.empty</a></span></span></span>)</span><span class="result">: <span name="scala.parallel.Future" class="extype">Future</span>[<span name="scala.Unit" class="extype">Unit</span>]</span>
+        <span class="name">changeMessageVisibilityResult</span><span class="params">(<span name="receipt">receipt: <a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]</span>)</span><span class="result">: <a name="squishy.Message.Changed" class="extype" href="Message$$Changed.html">Changed</a>[M]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that handles the result of a <code>ChangeMessageVisibilityRequest</code> operation.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that handles the result of a <code>ChangeMessageVisibilityRequest</code> operation.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
+    </li><li visbl="pub" name="squishy.AsyncQueue#changeVisibilityAsync" data-isabs="false">
+      <a id="changeVisibilityAsync(Receipt[M],Int,Callback[Changed[M]]):Future[Changed[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeVisibilityAsync</span><span class="params">(<span name="receipt">receipt: <a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]</span>, <span name="visibilityTimeout">visibilityTimeout: <span name="scala.Int" class="extype">Int</span></span>, <span name="callback">callback: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[<a name="squishy.Message.Changed" class="extype" href="Message$$Changed.html">Changed</a>[M]] = <span class="symbol"><span class="name"><a href="Callback$.html">Callback.empty</a></span></span></span>)</span><span class="result">: <span name="scala.parallel.Future" class="extype">Future</span>[<a name="squishy.Message.Changed" class="extype" href="Message$$Changed.html">Changed</a>[M]]</span>
       </span>
       </h4>
       <p class="shortcomment cmt">Attempts to extend the time that a message is invisible to other consumers.</p><div class="fullcomment"><div class="comment cmt"><p>Attempts to extend the time that a message is invisible to other consumers.
 </p></div><dl class="paramcmts block"><dt class="param">receipt</dt><dd class="cmt"><p>The receipt of the message to modify the visibility of.</p></dd><dt class="param">visibilityTimeout</dt><dd class="cmt"><p>The number of seconds to extends the message's visibility timeout.</p></dd><dt class="param">callback</dt><dd class="cmt"><p>The callback that should be notified when the operation completes.
+</p></dd></dl></div>
+    </li><li visbl="pub" name="squishy.AsyncQueue#changeVisibilityBatchAsync" data-isabs="false">
+      <a id="changeVisibilityBatchAsync(Seq[(Receipt[M], Int)],Callback[Seq[Message[M]]]):Future[Seq[Message[M]]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeVisibilityBatchAsync</span><span class="params">(<span name="entries">entries: Seq[(<a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M], <span name="scala.Int" class="extype">Int</span>)]</span>, <span name="callback">callback: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]] = <span class="symbol"><span class="name"><a href="Callback$.html">Callback.empty</a></span></span></span>)</span><span class="result">: <span name="scala.parallel.Future" class="extype">Future</span>[Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Attempts to extend the time that a batch of messages are invisible to other consumers.</p><div class="fullcomment"><div class="comment cmt"><p>Attempts to extend the time that a batch of messages are invisible to other consumers.
+</p></div><dl class="paramcmts block"><dt class="param">entries</dt><dd class="cmt"><p>The entries representing the messages to change the visibility of with their new visibility timeout.</p></dd><dt class="param">callback</dt><dd class="cmt"><p>The callback that should be notified when the operation completes.
 </p></dd></dl></div>
     </li><li visbl="prt" name="scala.AnyRef#clone" data-isabs="false">
       <a id="clone():AnyRef"></a>
@@ -271,19 +348,57 @@ URLs in the class description of <a name="squishy.Queue" class="extype" href="Qu
       </h4>
       <p class="shortcomment cmt">Utility method that extracts a <code>CreateQueueResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>CreateQueueResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
     </li><li visbl="pub" name="squishy.AsyncQueue#deleteAsync" data-isabs="false">
-      <a id="deleteAsync(Receipt[M],Callback[Unit]):Future[Unit]"></a>
+      <a id="deleteAsync(Receipt[M],Callback[Deleted[M]]):Future[Deleted[M]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">deleteAsync</span><span class="params">(<span name="receipt">receipt: <a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]</span>, <span name="callback">callback: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[<span name="scala.Unit" class="extype">Unit</span>] = <span class="symbol"><span class="name"><a href="Callback$.html">Callback.empty</a></span></span></span>)</span><span class="result">: <span name="scala.parallel.Future" class="extype">Future</span>[<span name="scala.Unit" class="extype">Unit</span>]</span>
+        <span class="name">deleteAsync</span><span class="params">(<span name="receipt">receipt: <a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]</span>, <span name="callback">callback: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[<a name="squishy.Message.Deleted" class="extype" href="Message$$Deleted.html">Deleted</a>[M]] = <span class="symbol"><span class="name"><a href="Callback$.html">Callback.empty</a></span></span></span>)</span><span class="result">: <span name="scala.parallel.Future" class="extype">Future</span>[<a name="squishy.Message.Deleted" class="extype" href="Message$$Deleted.html">Deleted</a>[M]]</span>
       </span>
       </h4>
       <p class="shortcomment cmt">Attempts to delete a message from this queue.</p><div class="fullcomment"><div class="comment cmt"><p>Attempts to delete a message from this queue.
 </p></div><dl class="paramcmts block"><dt class="param">receipt</dt><dd class="cmt"><p>The receipt of the message to delete from the queue.</p></dd><dt class="param">callback</dt><dd class="cmt"><p>The callback that should be notified when the operation completes.
 </p></dd></dl></div>
+    </li><li visbl="pub" name="squishy.AsyncQueue#deleteBatchAsync" data-isabs="false">
+      <a id="deleteBatchAsync(Seq[Receipt[M]],Callback[Seq[Message[M]]]):Future[Seq[Message[M]]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteBatchAsync</span><span class="params">(<span name="receipts">receipts: Seq[<a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]]</span>, <span name="callback">callback: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]] = <span class="symbol"><span class="name"><a href="Callback$.html">Callback.empty</a></span></span></span>)</span><span class="result">: <span name="scala.parallel.Future" class="extype">Future</span>[Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Attempts to delete a batch of messages from this queue.</p><div class="fullcomment"><div class="comment cmt"><p>Attempts to delete a batch of messages from this queue.
+</p></div><dl class="paramcmts block"><dt class="param">receipts</dt><dd class="cmt"><p>The receipts of the messages to delete from the queue.</p></dd><dt class="param">callback</dt><dd class="cmt"><p>The callback that should be notified when the operation completes.
+</p></dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#deleteMessageBatchRequest" data-isabs="false">
+      <a id="deleteMessageBatchRequest(String,Seq[Receipt[M]]):DeleteMessageBatchRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteMessageBatchRequest</span><span class="params">(<span name="queueUrl">queueUrl: String</span>, <span name="receipts">receipts: Seq[<a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]]</span>)</span><span class="result">: <span name="com.amazonaws.services.sqs.model.DeleteMessageBatchRequest" class="extype">DeleteMessageBatchRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>DeleteMessageBatchRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>DeleteMessageBatchRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#deleteMessageBatchResult" data-isabs="false">
+      <a id="deleteMessageBatchResult(DeleteMessageBatchResult,Seq[Receipt[M]]):Seq[Message[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteMessageBatchResult</span><span class="params">(<span name="result">result: <span name="com.amazonaws.services.sqs.model.DeleteMessageBatchResult" class="extype">DeleteMessageBatchResult</span></span>, <span name="receipts">receipts: Seq[<a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]]</span>)</span><span class="result">: Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>DeleteMessageBatchResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>DeleteMessageBatchResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
     </li><li visbl="prt" name="squishy.Queue#deleteMessageRequest" data-isabs="false">
       <a id="deleteMessageRequest(String,Receipt[M]):DeleteMessageRequest"></a>
       <h4 class="signature">
@@ -296,6 +411,18 @@ URLs in the class description of <a name="squishy.Queue" class="extype" href="Qu
       </span>
       </h4>
       <p class="shortcomment cmt">Utility method that constructs a <code>DeleteMessageRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>DeleteMessageRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#deleteMessageResult" data-isabs="false">
+      <a id="deleteMessageResult(Receipt[M]):Deleted[M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteMessageResult</span><span class="params">(<span name="receipt">receipt: <a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]</span>)</span><span class="result">: <a name="squishy.Message.Deleted" class="extype" href="Message$$Deleted.html">Deleted</a>[M]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that handles the result of a <code>DeleteMessageRequest</code> operation.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that handles the result of a <code>DeleteMessageRequest</code> operation.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
     </li><li visbl="pub" name="squishy.AsyncQueue#deleteQueueAsync_!" data-isabs="false">
       <a id="deleteQueueAsync_!(Callback[Unit]):Future[Unit]"></a>
       <h4 class="signature">
@@ -567,7 +694,7 @@ specified by Amazon SQS.
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
         <span class="name">retryPolicy</span><span class="result">: <a name="squishy.RetryPolicy" class="extype" href="RetryPolicy.html">RetryPolicy</a></span>
@@ -589,6 +716,46 @@ specified by Amazon SQS.
 specified by Amazon SQS.
 </p></div><dl class="paramcmts block"><dt class="param">msg</dt><dd class="cmt"><p>The body of the message to send.</p></dd><dt class="param">delaySeconds</dt><dd class="cmt"><p>The number of seconds to delay message availability.</p></dd><dt class="param">callback</dt><dd class="cmt"><p>The callback that should be notified when the operation completes.
 </p></dd></dl></div>
+    </li><li visbl="pub" name="squishy.AsyncQueue#sendBatchAsync" data-isabs="false">
+      <a id="sendBatchAsync[E](Seq[E],Callback[Seq[Message[M]]])(BatchEntry[E]):Future[Seq[Message[M]]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sendBatchAsync</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="entries">entries: Seq[E]</span>, <span name="callback">callback: <a name="squishy.Callback" class="extype" href="Callback.html">Callback</a>[Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a name="squishy.Queue.BatchEntry" class="extype" href="Queue$BatchEntry.html">BatchEntry</a>[E]</span>)</span><span class="result">: <span name="scala.parallel.Future" class="extype">Future</span>[Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sends a batch of messages to this queue.</p><div class="fullcomment"><div class="comment cmt"><p>Sends a batch of messages to this queue.</p><p>All optional parameters of this method, with the exception of the <code>callback</code> parameter, will default to the values
+specified by Amazon SQS.
+</p></div><dl class="paramcmts block"><dt class="param">entries</dt><dd class="cmt"><p>The entries representing the messages to send. These must be of type <code>M</code> for immediate messages or
+<code>(M, Int)</code> for messages with an initial delay.</p></dd><dt class="param">callback</dt><dd class="cmt"><p>The callback that should be notified when the operation completes.
+</p></dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#sendMessageBatchRequest" data-isabs="false">
+      <a id="sendMessageBatchRequest(String,Seq[(M, Int)]):SendMessageBatchRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sendMessageBatchRequest</span><span class="params">(<span name="queueUrl">queueUrl: String</span>, <span name="entries">entries: Seq[(M, <span name="scala.Int" class="extype">Int</span>)]</span>)</span><span class="result">: <span name="com.amazonaws.services.sqs.model.SendMessageBatchRequest" class="extype">SendMessageBatchRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>SendMessageBatchRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>SendMessageBatchRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#sendMessageBatchResult" data-isabs="false">
+      <a id="sendMessageBatchResult(SendMessageBatchResult,Seq[(M, Int)]):Seq[Message[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sendMessageBatchResult</span><span class="params">(<span name="result">result: <span name="com.amazonaws.services.sqs.model.SendMessageBatchResult" class="extype">SendMessageBatchResult</span></span>, <span name="entries">entries: Seq[(M, <span name="scala.Int" class="extype">Int</span>)]</span>)</span><span class="result">: Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>SendMessageBatchResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>SendMessageBatchResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a name="squishy.Queue" class="extype" href="Queue.html">Queue</a></dd></dl></div>
     </li><li visbl="prt" name="squishy.Queue#sendMessageRequest" data-isabs="false">
       <a id="sendMessageRequest(String,M,Int):SendMessageRequest"></a>
       <h4 class="signature">

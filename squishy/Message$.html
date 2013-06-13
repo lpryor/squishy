@@ -84,6 +84,42 @@
       </span>
       </h4>
       <p class="comment cmt">Utility class for dealing with collections of attributes in a type-safe manner.</p>
+    </li><li visbl="pub" name="squishy.Message.Changed" data-isabs="false">
+      <a id="Changed:Changed[M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Message$$Changed.html"><span class="name">Changed</span></a><span class="tparams">[<span name="M">+M</span>]</span><span class="params">(<span name="body">body: M</span>)</span><span class="result"> extends Message[M] with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Representation of a message that had its visibility changed.</p>
+    </li><li visbl="pub" name="squishy.Message.Deleted" data-isabs="false">
+      <a id="Deleted:Deleted[M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Message$$Deleted.html"><span class="name">Deleted</span></a><span class="tparams">[<span name="M">+M</span>]</span><span class="params">(<span name="body">body: M</span>)</span><span class="result"> extends Message[M] with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Representation of a message that has been deleted.</p>
+    </li><li visbl="pub" name="squishy.Message.Error" data-isabs="false">
+      <a id="Error:Error[M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Message$$Error.html"><span class="name">Error</span></a><span class="tparams">[<span name="M">+M</span>]</span><span class="params">(<span name="errorCode">errorCode: String</span>, <span name="errorMessage">errorMessage: String</span>, <span name="senderFault">senderFault: Boolean</span>, <span name="body">body: M</span>)</span><span class="result"> extends Message[M] with Product with Serializable</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Representation of a message operation that resulted in an error.</p>
     </li><li visbl="pub" name="squishy.Message#Key" data-isabs="false">
       <a id="Key:Key[T]"></a>
       <h4 class="signature">

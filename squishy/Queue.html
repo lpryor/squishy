@@ -70,7 +70,22 @@ trait will correctly update the cached queue URL value.
         <div id="allMembers">
         
 
-        
+        <div class="types members" id="types">
+              <h3>Type Members</h3>
+              <ol><li visbl="pub" name="squishy.Queue.BatchEntry" data-isabs="true">
+      <a id="BatchEntry:BatchEntry[E]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Queue$BatchEntry.html"><span class="name">BatchEntry</span></a><span class="tparams">[<span name="E">-E</span>]</span><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Base class for type classes that identify entries in batch operations.</p>
+    </li></ol>
+            </div>
 
         <div class="values members" id="values">
               <h3>Abstract Value Members</h3>
@@ -175,6 +190,18 @@ trait will correctly update the cached queue URL value.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="pub" name="squishy.Queue.BatchEntry" data-isabs="false">
+      <a id="BatchEntry:BatchEntry"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Queue$BatchEntry$.html"><span class="name">BatchEntry</span></a><span class="result"> extends AnyRef</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Definitions of the supported batch entry type classes.</p>
     </li><li visbl="pub" name="scala.Any#asInstanceOf" data-isabs="false">
       <a id="asInstanceOf[T0]:T0"></a>
       <h4 class="signature">
@@ -187,6 +214,30 @@ trait will correctly update the cached queue URL value.
       </span>
       </h4>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#changeMessageVisibilityBatchRequest" data-isabs="false">
+      <a id="changeMessageVisibilityBatchRequest(String,Seq[(Receipt[M], Int)]):ChangeMessageVisibilityBatchRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeMessageVisibilityBatchRequest</span><span class="params">(<span name="queueUrl">queueUrl: String</span>, <span name="entries">entries: Seq[(<a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M], <span name="scala.Int" class="extype">Int</span>)]</span>)</span><span class="result">: <span name="com.amazonaws.services.sqs.model.ChangeMessageVisibilityBatchRequest" class="extype">ChangeMessageVisibilityBatchRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>ChangeMessageVisibilityBatchRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>ChangeMessageVisibilityBatchRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#changeMessageVisibilityBatchResult" data-isabs="false">
+      <a id="changeMessageVisibilityBatchResult(ChangeMessageVisibilityBatchResult,Seq[(Receipt[M], Int)]):Seq[Message[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeMessageVisibilityBatchResult</span><span class="params">(<span name="result">result: <span name="com.amazonaws.services.sqs.model.ChangeMessageVisibilityBatchResult" class="extype">ChangeMessageVisibilityBatchResult</span></span>, <span name="entries">entries: Seq[(<a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M], <span name="scala.Int" class="extype">Int</span>)]</span>)</span><span class="result">: Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>ChangeMessageVisibilityBatchResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>ChangeMessageVisibilityBatchResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li visbl="prt" name="squishy.Queue#changeMessageVisibilityRequest" data-isabs="false">
       <a id="changeMessageVisibilityRequest(String,Receipt[M],Int):ChangeMessageVisibilityRequest"></a>
       <h4 class="signature">
@@ -199,6 +250,18 @@ trait will correctly update the cached queue URL value.
       </span>
       </h4>
       <p class="shortcomment cmt">Utility method that constructs a <code>ChangeMessageVisibilityRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>ChangeMessageVisibilityRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#changeMessageVisibilityResult" data-isabs="false">
+      <a id="changeMessageVisibilityResult(Receipt[M]):Changed[M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeMessageVisibilityResult</span><span class="params">(<span name="receipt">receipt: <a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]</span>)</span><span class="result">: <a name="squishy.Message.Changed" class="extype" href="Message$$Changed.html">Changed</a>[M]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that handles the result of a <code>ChangeMessageVisibilityRequest</code> operation.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that handles the result of a <code>ChangeMessageVisibilityRequest</code> operation.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li visbl="prt" name="scala.AnyRef#clone" data-isabs="false">
       <a id="clone():AnyRef"></a>
       <h4 class="signature">
@@ -238,6 +301,30 @@ trait will correctly update the cached queue URL value.
       </span>
       </h4>
       <p class="shortcomment cmt">Utility method that extracts a <code>CreateQueueResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>CreateQueueResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#deleteMessageBatchRequest" data-isabs="false">
+      <a id="deleteMessageBatchRequest(String,Seq[Receipt[M]]):DeleteMessageBatchRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteMessageBatchRequest</span><span class="params">(<span name="queueUrl">queueUrl: String</span>, <span name="receipts">receipts: Seq[<a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]]</span>)</span><span class="result">: <span name="com.amazonaws.services.sqs.model.DeleteMessageBatchRequest" class="extype">DeleteMessageBatchRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>DeleteMessageBatchRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>DeleteMessageBatchRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#deleteMessageBatchResult" data-isabs="false">
+      <a id="deleteMessageBatchResult(DeleteMessageBatchResult,Seq[Receipt[M]]):Seq[Message[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteMessageBatchResult</span><span class="params">(<span name="result">result: <span name="com.amazonaws.services.sqs.model.DeleteMessageBatchResult" class="extype">DeleteMessageBatchResult</span></span>, <span name="receipts">receipts: Seq[<a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]]</span>)</span><span class="result">: Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>DeleteMessageBatchResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>DeleteMessageBatchResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li visbl="prt" name="squishy.Queue#deleteMessageRequest" data-isabs="false">
       <a id="deleteMessageRequest(String,Receipt[M]):DeleteMessageRequest"></a>
       <h4 class="signature">
@@ -250,6 +337,18 @@ trait will correctly update the cached queue URL value.
       </span>
       </h4>
       <p class="shortcomment cmt">Utility method that constructs a <code>DeleteMessageRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>DeleteMessageRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#deleteMessageResult" data-isabs="false">
+      <a id="deleteMessageResult(Receipt[M]):Deleted[M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteMessageResult</span><span class="params">(<span name="receipt">receipt: <a name="squishy.Message.Receipt" class="extype" href="Message$$Receipt.html">Receipt</a>[M]</span>)</span><span class="result">: <a name="squishy.Message.Deleted" class="extype" href="Message$$Deleted.html">Deleted</a>[M]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that handles the result of a <code>DeleteMessageRequest</code> operation.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that handles the result of a <code>DeleteMessageRequest</code> operation.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li visbl="prt" name="squishy.Queue#deleteQueueRequest" data-isabs="false">
       <a id="deleteQueueRequest(String):DeleteQueueRequest"></a>
       <h4 class="signature">
@@ -464,13 +563,37 @@ associated with <code>sqsClient</code>.
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
         <span class="name">retryPolicy</span><span class="result">: <a name="squishy.RetryPolicy" class="extype" href="RetryPolicy.html">RetryPolicy</a></span>
       </span>
       </h4>
       <p class="shortcomment cmt">A strategy for handling errors when interacting with SQS.</p><div class="fullcomment"><div class="comment cmt"><p>A strategy for handling errors when interacting with SQS. Defaults to squishy.RetryPolicy.NoRetry.</p></div></div>
+    </li><li visbl="prt" name="squishy.Queue#sendMessageBatchRequest" data-isabs="false">
+      <a id="sendMessageBatchRequest(String,Seq[(M, Int)]):SendMessageBatchRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sendMessageBatchRequest</span><span class="params">(<span name="queueUrl">queueUrl: String</span>, <span name="entries">entries: Seq[(M, <span name="scala.Int" class="extype">Int</span>)]</span>)</span><span class="result">: <span name="com.amazonaws.services.sqs.model.SendMessageBatchRequest" class="extype">SendMessageBatchRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>SendMessageBatchRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>SendMessageBatchRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li visbl="prt" name="squishy.Queue#sendMessageBatchResult" data-isabs="false">
+      <a id="sendMessageBatchResult(SendMessageBatchResult,Seq[(M, Int)]):Seq[Message[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sendMessageBatchResult</span><span class="params">(<span name="result">result: <span name="com.amazonaws.services.sqs.model.SendMessageBatchResult" class="extype">SendMessageBatchResult</span></span>, <span name="entries">entries: Seq[(M, <span name="scala.Int" class="extype">Int</span>)]</span>)</span><span class="result">: Seq[<a name="squishy.Message" class="extype" href="Message.html">Message</a>[M]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>SendMessageBatchResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>SendMessageBatchResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li visbl="prt" name="squishy.Queue#sendMessageRequest" data-isabs="false">
       <a id="sendMessageRequest(String,M,Int):SendMessageRequest"></a>
       <h4 class="signature">
