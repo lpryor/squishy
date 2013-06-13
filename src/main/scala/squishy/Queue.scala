@@ -119,6 +119,35 @@ trait Queue[M] {
   protected def sendMessageResult(result: SendMessageResult, msg: M): Message.Sent[M] =
     Message.Sent(result.getMessageId, result.getMD5OfMessageBody, msg)
 
+  /** Utility method that constructs a `SendMessageBatchRequest` instance. */
+  protected def sendMessageBatchRequest(queueUrl: String, entries: Seq[(M, Int)]): SendMessageBatchRequest =
+    new SendMessageBatchRequest()
+      .withQueueUrl(queueUrl)
+      .withEntries(entries.zipWithIndex.map {
+        case ((msg, delaySeconds), id) =>
+          val entry = new SendMessageBatchRequestEntry()
+            .withId(id.toString)
+            .withMessageBody(messageMapper(msg))
+          if (delaySeconds >= 0)
+            entry.setDelaySeconds(delaySeconds)
+          entry
+      }.asJava)
+
+  /** Utility method that extracts a `SendMessageBatchResult` instance. */
+  protected def sendMessageBatchResult(result: SendMessageBatchResult, entries: Seq[(M, Int)]): Seq[Message[M]] = {
+    val messages = entries.toIndexedSeq
+    val results = collection.mutable.IndexedSeq.fill[Message[M]](messages.length)(null)
+    result.getSuccessful.asScala foreach { e =>
+      val id = e.getId.toInt
+      results(id) = Message.Sent(e.getMessageId, e.getMD5OfMessageBody, messages(id)._1)
+    }
+    result.getFailed.asScala foreach { e =>
+      val id = e.getId.toInt
+      results(id) = Message.Error(e.getCode, e.getMessage, e.getSenderFault, messages(id)._1)
+    }
+    results
+  }
+
   /** Utility method that constructs a `ReceiveMessageRequest` instance. */
   protected def receiveMessageRequest(
     queueUrl: String,
@@ -138,6 +167,7 @@ trait Queue[M] {
       request.setAttributeNames(attributes.map(_.name).asJavaCollection)
     request
   }
+
   /** Utility method that extracts a `ReceiveMessageResult` instance. */
   protected def receiveMessageResult(result: ReceiveMessageResult): Seq[Message.Receipt[M]] =
     result.getMessages.asScala.map { m =>
@@ -161,11 +191,130 @@ trait Queue[M] {
       .withReceiptHandle(receipt.handle)
       .withVisibilityTimeout(visibilityTimeout)
 
+  /** Utility method that handles the result of a `ChangeMessageVisibilityRequest` operation. */
+  protected def changeMessageVisibilityResult(receipt: Message.Receipt[M]): Message.Changed[M] =
+    Message.Changed(receipt.body)
+
+  /** Utility method that constructs a `ChangeMessageVisibilityBatchRequest` instance. */
+  protected def changeMessageVisibilityBatchRequest(
+    queueUrl: String,
+    entries: Seq[(Message.Receipt[M], Int)] //
+    ): ChangeMessageVisibilityBatchRequest =
+    new ChangeMessageVisibilityBatchRequest()
+      .withQueueUrl(queueUrl)
+      .withEntries(entries.zipWithIndex.map {
+        case ((receipt, visibilityTimeout), id) =>
+          new ChangeMessageVisibilityBatchRequestEntry()
+            .withId(id.toString)
+            .withReceiptHandle(receipt.handle)
+            .withVisibilityTimeout(visibilityTimeout)
+      }.asJava)
+
+  /** Utility method that extracts a `ChangeMessageVisibilityBatchResult` instance. */
+  protected def changeMessageVisibilityBatchResult(
+    result: ChangeMessageVisibilityBatchResult,
+    entries: Seq[(Message.Receipt[M], Int)] //
+    ): Seq[Message[M]] = {
+    val messages = entries.toIndexedSeq
+    val results = collection.mutable.IndexedSeq.fill[Message[M]](messages.length)(null)
+    result.getSuccessful.asScala foreach { e =>
+      val id = e.getId.toInt
+      results(id) = Message.Changed(messages(id)._1.body)
+    }
+    result.getFailed.asScala foreach { e =>
+      val id = e.getId.toInt
+      results(id) = Message.Error(e.getCode, e.getMessage, e.getSenderFault, messages(id)._1.body)
+    }
+    results
+  }
+
   /** Utility method that constructs a `DeleteMessageRequest` instance. */
   protected def deleteMessageRequest(queueUrl: String, receipt: Message.Receipt[M]): DeleteMessageRequest =
     new DeleteMessageRequest()
       .withQueueUrl(queueUrl)
       .withReceiptHandle(receipt.handle)
+
+  /** Utility method that handles the result of a `DeleteMessageRequest` operation. */
+  protected def deleteMessageResult(receipt: Message.Receipt[M]): Message.Deleted[M] =
+    Message.Deleted(receipt.body)
+
+  /** Utility method that constructs a `DeleteMessageBatchRequest` instance. */
+  protected def deleteMessageBatchRequest(
+    queueUrl: String,
+    receipts: Seq[Message.Receipt[M]] //
+    ): DeleteMessageBatchRequest =
+    new DeleteMessageBatchRequest()
+      .withQueueUrl(queueUrl)
+      .withEntries(receipts.zipWithIndex.map {
+        case (receipt, id) =>
+          new DeleteMessageBatchRequestEntry()
+            .withId(id.toString)
+            .withReceiptHandle(receipt.handle)
+      }.asJava)
+
+  /** Utility method that extracts a `DeleteMessageBatchResult` instance. */
+  protected def deleteMessageBatchResult(
+    result: DeleteMessageBatchResult,
+    receipts: Seq[Message.Receipt[M]] //
+    ): Seq[Message[M]] = {
+    val messages = receipts.toIndexedSeq
+    val results = collection.mutable.IndexedSeq.fill[Message[M]](messages.length)(null)
+    result.getSuccessful.asScala foreach { e =>
+      val id = e.getId.toInt
+      results(id) = Message.Deleted(messages(id).body)
+    }
+    result.getFailed.asScala foreach { e =>
+      val id = e.getId.toInt
+      results(id) = Message.Error(e.getCode, e.getMessage, e.getSenderFault, messages(id).body)
+    }
+    results
+  }
+
+  /**
+   * Base class for type classes that identify entries in batch operations.
+   */
+  sealed trait BatchEntry[-E] {
+
+    /** Extracts the message body from an entry. */
+    def body(entry: E): M
+
+    /** Extracts the number of delay seconds from an entry. */
+    def delaySeconds(entry: E): Int
+
+  }
+
+  /**
+   * Definitions of the supported batch entry type classes.
+   */
+  object BatchEntry {
+
+    /**
+     * Type class for batch entries with no initial delay.
+     */
+    implicit case object NoDelay extends BatchEntry[M] {
+
+      /** @inheritdoc */
+      override def body(entry: M) = entry
+
+      /** @inheritdoc */
+      override def delaySeconds(entry: M) = -1
+
+    }
+
+    /**
+     * Type class for batch entries with an initial delay.
+     */
+    implicit case object WithDelay extends BatchEntry[(M, Int)] {
+
+      /** @inheritdoc */
+      override def body(entry: (M, Int)) = entry._1
+
+      /** @inheritdoc */
+      override def delaySeconds(entry: (M, Int)) = entry._2
+
+    }
+
+  }
 
 }
 

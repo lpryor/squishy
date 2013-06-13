@@ -117,6 +117,22 @@ trait SyncQueue[M] extends Queue[M] {
   }
 
   /**
+   * Sends a batch of messages to this queue.
+   *
+   * All optional parameters of this method will default to the values specified by Amazon SQS.
+   *
+   * @param entries The entries representing the messages to send. These must be of type `M` for immediate messages or
+   * `(M, Int)` for messages with an initial delay.
+   */
+  def sendBatch[E: BatchEntry](entries: E*): Seq[Message[M]] = {
+    val typeCls = implicitly[BatchEntry[E]]
+    val messages = entries map (e => (typeCls.body(e), typeCls.delaySeconds(e)))
+    val request = sendMessageBatchRequest(requireQueueUrl, messages)
+    val result = retryPolicy.retry("Queue(%s).sendBatch" format queueName)(sqsClient.sendMessageBatch(request))
+    sendMessageBatchResult(result, messages)
+  }
+
+  /**
    * Attempts to receive one or more messages from this queue.
    *
    * All optional parameters of this method will default to the values specified by Amazon SQS.
@@ -148,9 +164,23 @@ trait SyncQueue[M] extends Queue[M] {
    * @param receipt The receipt of the message to modify the visibility of.
    * @param visibilityTimeout The number of seconds to extends the message's visibility timeout.
    */
-  def changeVisibility(receipt: Message.Receipt[M], visibilityTimeout: Int) {
+  def changeVisibility(receipt: Message.Receipt[M], visibilityTimeout: Int): Message.Changed[M] = {
     val request = changeMessageVisibilityRequest(requireQueueUrl, receipt, visibilityTimeout)
     retryPolicy.retry("Queue(%s).changeVisibility" format queueName)(sqsClient.changeMessageVisibility(request))
+    changeMessageVisibilityResult(receipt)
+  }
+
+  /**
+   * Attempts to extend the time that a batch of messages is invisible to other consumers.
+   *
+   * @param entries The entries representing the messages to change the visibility of with their new visibility timeout.
+   */
+  def changeVisibilityBatch(entries: (Message.Receipt[M], Int)*): Seq[Message[M]] = {
+    val request = changeMessageVisibilityBatchRequest(requireQueueUrl, entries)
+    val result = retryPolicy.retry("Queue(%s).changeVisibilityBatch" format queueName) {
+      sqsClient.changeMessageVisibilityBatch(request)
+    }
+    changeMessageVisibilityBatchResult(result, entries)
   }
 
   /**
@@ -158,9 +188,21 @@ trait SyncQueue[M] extends Queue[M] {
    *
    * @param receipt The receipt of the message to delete from the queue.
    */
-  def delete(receipt: Message.Receipt[M]) {
+  def delete(receipt: Message.Receipt[M]): Message.Deleted[M] = {
     val request = deleteMessageRequest(requireQueueUrl, receipt)
     retryPolicy.retry("Queue(%s).delete" format queueName)(sqsClient.deleteMessage(request))
+    deleteMessageResult(receipt)
+  }
+
+  /**
+   * Attempts to delete a batch of messages from this queue.
+   *
+   * @param receipts The receipts of the messages to delete from the queue.
+   */
+  def deleteBatch(receipts: Message.Receipt[M]*): Seq[Message[M]] = {
+    val request = deleteMessageBatchRequest(requireQueueUrl, receipts)
+    val result = retryPolicy.retry("Queue(%s).deleteBatch" format queueName)(sqsClient.deleteMessageBatch(request))
+    deleteMessageBatchResult(result, receipts)
   }
 
   /** Returns the queue URL or throws an exception if it does not exist. */

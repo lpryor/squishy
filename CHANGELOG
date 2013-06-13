@@ -1,4 +1,12 @@
+==================
 1.0.0 (2013-05-17)
 ==================
 
 Initial release.
+
+
+==================
+1.1.0 (2013-06-13)
+==================
+
+Added support for the batch send, change visibility & delete operations.

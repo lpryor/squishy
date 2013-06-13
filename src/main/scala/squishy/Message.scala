@@ -77,6 +77,38 @@ object Message extends Attributes {
     extends Message[M]
 
   /**
+   * Representation of a message that had its visibility changed.
+   *
+   * @tparam M The type of body contained by this message.
+   * @param body The body of this message.
+   */
+  final case class Changed[+M](override val body: M) extends Message[M]
+
+  /**
+   * Representation of a message that has been deleted.
+   *
+   * @tparam M The type of body contained by this message.
+   * @param body The body of this message.
+   */
+  final case class Deleted[+M](override val body: M) extends Message[M]
+
+  /**
+   * Representation of a message operation that resulted in an error.
+   *
+   * @tparam M The type of body contained by this message.
+   * @param errorCode The error code associated with this message.
+   * @param errorMessage The error message associated with this message.
+   * @param senderFault True if the error was caused by the sender.
+   * @param body The body of this message.
+   */
+  final case class Error[+M](
+    errorCode: String,
+    errorMessage: String,
+    senderFault: Boolean,
+    override val body: M)
+    extends Message[M]
+
+  /**
    * The message-specific attribute key base class.
    *
    * @tparam T The type of value associated with this key.

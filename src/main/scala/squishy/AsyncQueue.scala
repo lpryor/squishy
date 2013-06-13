@@ -206,6 +206,33 @@ trait AsyncQueue[M] extends Queue[M] {
   }
 
   /**
+   * Sends a batch of messages to this queue.
+   *
+   * All optional parameters of this method, with the exception of the `callback` parameter, will default to the values
+   * specified by Amazon SQS.
+   *
+   * @param entries The entries representing the messages to send. These must be of type `M` for immediate messages or
+   * `(M, Int)` for messages with an initial delay.
+   * @param callback The callback that should be notified when the operation completes.
+   */
+  def sendBatchAsync[E: BatchEntry](
+    entries: Seq[E],
+    callback: Callback[Seq[Message[M]]] = Callback.empty //
+    ): Future[Seq[Message[M]]] = {
+    val result = new FutureResult(callback)
+    requireQueueUrl(result) { queueUrl =>
+      val typeCls = implicitly[BatchEntry[E]]
+      val messages = entries map (e => (typeCls.body(e), typeCls.delaySeconds(e)))
+      val request = sendMessageBatchRequest(queueUrl, messages)
+      retryPolicy.retryAsync("Queue(%s).sendBatchAsync" format queueName, result) { callback =>
+        sqsClient.sendMessageBatchAsync(request,
+          callback map ((r: SendMessageBatchResult) => sendMessageBatchResult(r, messages)))
+      }
+    }
+    result
+  }
+
+  /**
    * Attempts to receive one or more messages from this queue.
    *
    * All optional parameters of this method, with the exception of the `callback` parameter, will default to the values
@@ -249,13 +276,36 @@ trait AsyncQueue[M] extends Queue[M] {
   def changeVisibilityAsync(
     receipt: Message.Receipt[M],
     visibilityTimeout: Int,
-    callback: Callback[Unit] = Callback.empty //
-    ): Future[Unit] = {
+    callback: Callback[Message.Changed[M]] = Callback.empty //
+    ): Future[Message.Changed[M]] = {
     val result = new FutureResult(callback)
     requireQueueUrl(result) { queueUrl =>
       val request = changeMessageVisibilityRequest(queueUrl, receipt, visibilityTimeout)
       retryPolicy.retryAsync("Queue(%s).changeVisibilityAsync" format queueName, result) { callback =>
-        sqsClient.changeMessageVisibilityAsync(request, callback map ((result: Void) => ()))
+        sqsClient.changeMessageVisibilityAsync(request,
+          callback map ((result: Void) => changeMessageVisibilityResult(receipt)))
+      }
+    }
+    result
+  }
+
+  /**
+   * Attempts to extend the time that a batch of messages are invisible to other consumers.
+   *
+   * @param entries The entries representing the messages to change the visibility of with their new visibility timeout.
+   * @param callback The callback that should be notified when the operation completes.
+   */
+  def changeVisibilityBatchAsync(
+    entries: Seq[(Message.Receipt[M], Int)],
+    callback: Callback[Seq[Message[M]]] = Callback.empty //
+    ): Future[Seq[Message[M]]] = {
+    val result = new FutureResult(callback)
+    requireQueueUrl(result) { queueUrl =>
+      val request = changeMessageVisibilityBatchRequest(queueUrl, entries)
+      retryPolicy.retryAsync("Queue(%s).changeVisibilityBatchAsync" format queueName, result) { callback =>
+        sqsClient.changeMessageVisibilityBatchAsync(request,
+          callback map ((result: ChangeMessageVisibilityBatchResult) =>
+            changeMessageVisibilityBatchResult(result, entries)))
       }
     }
     result
@@ -267,12 +317,36 @@ trait AsyncQueue[M] extends Queue[M] {
    * @param receipt The receipt of the message to delete from the queue.
    * @param callback The callback that should be notified when the operation completes.
    */
-  def deleteAsync(receipt: Message.Receipt[M], callback: Callback[Unit] = Callback.empty): Future[Unit] = {
+  def deleteAsync(
+    receipt: Message.Receipt[M],
+    callback: Callback[Message.Deleted[M]] = Callback.empty //
+    ): Future[Message.Deleted[M]] = {
     val result = new FutureResult(callback)
     requireQueueUrl(result) { queueUrl =>
       val request = deleteMessageRequest(queueUrl, receipt)
       retryPolicy.retryAsync("Queue(%s).deleteAsync" format queueName, result) { callback =>
-        sqsClient.deleteMessageAsync(request, callback map ((result: Void) => ()))
+        sqsClient.deleteMessageAsync(request, callback map ((result: Void) => deleteMessageResult(receipt)))
+      }
+    }
+    result
+  }
+
+  /**
+   * Attempts to delete a batch of messages from this queue.
+   *
+   * @param receipts The receipts of the messages to delete from the queue.
+   * @param callback The callback that should be notified when the operation completes.
+   */
+  def deleteBatchAsync(
+    receipts: Seq[Message.Receipt[M]],
+    callback: Callback[Seq[Message[M]]] = Callback.empty //
+    ): Future[Seq[Message[M]]] = {
+    val result = new FutureResult(callback)
+    requireQueueUrl(result) { queueUrl =>
+      val request = deleteMessageBatchRequest(queueUrl, receipts)
+      retryPolicy.retryAsync("Queue(%s).deleteBatchAsync" format queueName, result) { callback =>
+        sqsClient.deleteMessageBatchAsync(request,
+          callback map ((result: DeleteMessageBatchResult) => deleteMessageBatchResult(result, receipts)))
       }
     }
     result
