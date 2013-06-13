@@ -58,7 +58,7 @@ trait Queue[M] {
   val queueOwner: Option[String] = None
 
   /** A strategy for handling errors when interacting with SQS. Defaults to [[squishy.RetryPolicy.NoRetry]]. */
-  val retryPolicy: RetryPolicy = RetryPolicy.NoRetry
+  lazy val retryPolicy: RetryPolicy = RetryPolicy.NoRetry
 
   /** The cached queue URL. */
   @volatile

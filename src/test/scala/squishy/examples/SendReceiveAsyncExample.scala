@@ -72,8 +72,6 @@ object SendReceiveAsyncExample extends App {
 
     override val queueName = "Example"
 
-    override val retryPolicy = RetryPolicy.NoRetry
-
     override val sqsClient = new fake.FakeSQSAsync
 
     override val messageMapper = new Mapper[MyMessage] {
