@@ -136,7 +136,7 @@ class FakeSQS extends AmazonSQS {
   override def sendMessage(request: SendMessageRequest) = {
     val queue = getQueue(request.getQueueUrl)
     val messageSize = request.getMessageBody.getBytes("UTF-8").length
-    if (messageSize > 65536)
+    if (messageSize > 262144)
       throw new InvalidMessageContentsException("Message is too large: " + messageSize)
     queue.send(request.getMessageBody, Option(request.getDelaySeconds) map (_.longValue)) match {
       case Some(msg) =>
@@ -154,7 +154,7 @@ class FakeSQS extends AmazonSQS {
     val entries = request.getEntries.asScala
     checkBatch(entries)(_.getId)
     val messagesSize = entries.map(_.getMessageBody.getBytes("UTF-8").length).sum
-    if (messagesSize > 65536)
+    if (messagesSize > 262144)
       throw new BatchRequestTooLongException("Messages combined are too long: " + messagesSize)
     var successful = Vector.empty[SendMessageBatchResultEntry]
     var failed = Vector.empty[BatchResultErrorEntry]
@@ -330,7 +330,7 @@ object FakeSQS {
   /** The names and default values of the mutable queue attributes. */
   val defaultAttributes = Map(
     QueueAttributeName.DelaySeconds.name -> "0",
-    QueueAttributeName.MaximumMessageSize.name -> "65536",
+    QueueAttributeName.MaximumMessageSize.name -> "262144",
     QueueAttributeName.MessageRetentionPeriod.name -> "345600",
     QueueAttributeName.Policy.name -> "",
     QueueAttributeName.ReceiveMessageWaitTimeSeconds.name -> "0",

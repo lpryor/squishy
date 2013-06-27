@@ -10,3 +10,10 @@ Initial release.
 ==================
 
 Added support for the batch send, change visibility & delete operations.
+
+
+==================
+1.1.1 (2013-06-27)
+==================
+
+Support for the new maximum message size (256 KB).

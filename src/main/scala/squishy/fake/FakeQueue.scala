@@ -58,7 +58,7 @@ class FakeQueue(val name: String) {
   private var _messageRetentionPeriod = 345600L
   /** The maximum allowed size of messages in bytes. */
   @volatile
-  private var _maximumMessageSize = 65536L
+  private var _maximumMessageSize = 262144L
   /** The queue's security policy (currently not used). */
   @volatile
   private var _policy = ""
