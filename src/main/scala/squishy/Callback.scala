@@ -19,6 +19,8 @@ package squishy
 import com.amazonaws.AmazonWebServiceRequest
 import com.amazonaws.handlers.AsyncHandler
 
+import language.implicitConversions
+
 /**
  * Base type for objects that process the outcome of an asynchronous operation.
  *

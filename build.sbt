@@ -2,10 +2,8 @@ organization := "squishy"
 
 name := "squishy"
 
-version := "1.1.1"
+version := "1.2"
 
-scalaVersion := "2.9.3"
+scalaVersion := "2.10.2"
 
-crossScalaVersions := Seq("2.9.3", "2.10.2")
-
-libraryDependencies += "com.amazonaws" % "aws-java-sdk" % "1.4.7"
+libraryDependencies += "com.amazonaws" % "aws-java-sdk" % "1.5.2"

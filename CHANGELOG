@@ -17,3 +17,10 @@ Added support for the batch send, change visibility & delete operations.
 ==================
 
 Support for the new maximum message size (256 KB).
+
+
+==================
+1.2 (2013-08-05)
+==================
+
+Moving to Scala 2.10.

@@ -19,7 +19,7 @@
 package squishy
 
 /**
- * A plugagable warning and error logger.
+ * A plugable warning and error logger.
  */
 trait Logger {
 

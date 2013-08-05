@@ -27,6 +27,8 @@ import com.amazonaws.services.sqs.model._
 import collection.JavaConverters._
 import collection.mutable.HashMap
 
+import language.implicitConversions
+
 /**
  * A simple implementation of the Amazon SQS interface for testing purposes.
  */

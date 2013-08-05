@@ -16,6 +16,8 @@
  */
 package squishy
 
+import language.higherKinds
+
 /**
  * A template that supports the definition of type safe key-value attributes.
  *

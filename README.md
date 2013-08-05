@@ -21,7 +21,7 @@ See [CHANGELOG](CHANGELOG) for the project history.
 
 ### Building ###
 
-You need SBT 0.12.x or higher.
+You need SBT 0.12 or higher.
 
     # Compile and package .jars.
     sbt package
@@ -35,7 +35,7 @@ See [src/test/scala/squishy/examples](src/test/scala/squishy/examples) for examp
 
 ### Target platform ###
 
-* Scala 2.9.0+
+* Scala 2.10+
 * JVM 1.5+
 
 ### License ###
