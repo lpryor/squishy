@@ -17,7 +17,7 @@ There are two main components to the Squishy library:
     
 API Documentation is [available online](http://lpryor.github.io/squishy/#squishy.package).
 
-See [CHANGELOG](CHANGELOG) for the project history.
+See [CHANGELOG.md](CHANGELOG.md) for the project history.
 
 ### Building ###
 

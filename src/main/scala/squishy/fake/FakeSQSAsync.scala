@@ -34,7 +34,7 @@ import java.util.concurrent.{
 class FakeSQSAsync extends FakeSQS with AmazonSQSAsync {
 
   /** The executor used to schedule requests. */
-  private val executor = Executors.newCachedThreadPool()
+  val executor = Executors.newCachedThreadPool()
 
   /** @inheritdoc */
   override def createQueueAsync(request: CreateQueueRequest) =

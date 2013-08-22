@@ -17,6 +17,8 @@
 package squishy
 package examples
 
+import scala.concurrent.ExecutionContext
+
 /**
  * A simple example that shows sending and receiving in asyncronously.
  */
@@ -30,21 +32,16 @@ object SendReceiveAsyncExample extends App {
   if (!queue.exists)
     queue.createQueue()
 
+  import queue.executionContext
+
   // Continuously receive messages and print to stdout until terminated.
   def doReceive() {
-    queue.receiveAsync(callback = Callback { receipts =>
-      try {
-        receipts() foreach { receipt =>
-          println(receipt.body.text)
-          queue.delete(receipt)
-        }
-      } catch {
-        case e: Exception =>
-          e.printStackTrace()
-      }
-      if (!terminated)
+    queue.receiveAsync() onSuccess {
+      case receipts =>
+        receipts foreach (r => println(r.body.text))
+        queue.deleteBatch(receipts: _*)
         doReceive()
-    })
+    }
   }
   doReceive()
 
@@ -56,7 +53,7 @@ object SendReceiveAsyncExample extends App {
       terminated = true
       queue.sqsClient.shutdown()
     } else
-      queue.sendAsync(MyMessage(text), callback = Callback(_ => doSend()))
+      queue.sendAsync(MyMessage(text)) onSuccess { case _ => doSend() }
   }
   doSend()
 
@@ -73,6 +70,8 @@ object SendReceiveAsyncExample extends App {
     override val queueName = "Example"
 
     override val sqsClient = new fake.FakeSQSAsync
+
+    override implicit val executionContext = ExecutionContext.fromExecutor(sqsClient.executor)
 
     override val messageMapper = new Mapper[MyMessage] {
       override def apply(msg: MyMessage) = msg.text

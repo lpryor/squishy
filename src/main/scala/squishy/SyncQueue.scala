@@ -32,50 +32,49 @@ trait SyncQueue[M] extends Queue[M] {
   def exists: Boolean = queueUrl.isDefined
 
   /** Returns the URL of this queue if it exists or `None` if it does not. */
-  def queueUrl: Option[String] = cachedQueueUrl match {
-    case Some(queueUrl) =>
-      queueUrl
-    case None =>
+  def queueUrl: Option[String] =
+    if (cachedQueueUrl.isSet) cachedQueueUrl.get
+    else {
       val request = getQueueUrlRequest()
-      val result = retryPolicy.retry("Queue(%s).queueUrl" format queueName) {
+      val result = retryPolicy.retry(s"Queue($queueName).queueUrl") {
         try {
           Some(sqsClient.getQueueUrl(request))
         } catch {
           case e: QueueDoesNotExistException => None
         }
       }
-      synchronized {
-        if (cachedQueueUrl.isEmpty)
-          cachedQueueUrl = Some(result map getQueueUrlResult)
-      }
+      if (!cachedQueueUrl.isSet)
+        cachedQueueUrl.put(result map getQueueUrlResult)
       cachedQueueUrl.get
-  }
+    }
 
   /** Returns all of the attributes of this queue if it exists or an empty set if it does not. */
-  def attributes: Queue.AttributeSet = attributes(Queue.keys: _*)
+  def attributes: Queue.AttributeSet =
+    attributes(Queue.keys: _*)
 
   /**
    * Returns the specified attributes of this queue if it exists or an empty set if it does not.
    *
    * @param keys The keys that identify the attributes to return.
    */
-  def attributes(keys: Queue.Key[_]*): Queue.AttributeSet = queueUrl match {
-    case Some(queueUrl) =>
-      val request = getQueueAttributesRequest(queueUrl, keys: _*)
-      val result = retryPolicy.retry("Queue(%s).attributes" format queueName)(sqsClient.getQueueAttributes(request))
-      getQueueAttributesResult(result)
-    case None =>
-      Queue.AttributeSet()
-  }
+  def attributes(keys: Queue.Key[_]*): Queue.AttributeSet =
+    queueUrl match {
+      case Some(queueUrl) =>
+        val request = getQueueAttributesRequest(queueUrl, keys: _*)
+        val result = retryPolicy.retry(s"Queue($queueName).attributes")(sqsClient.getQueueAttributes(request))
+        getQueueAttributesResult(result)
+      case None =>
+        Queue.AttributeSet()
+    }
 
   /**
    * Sets the attributes of this queue, throwing an exception if it does not exist.
    *
    * @param attributes The attributes to configure for this queue.
    */
-  def attributes_=(attributes: Seq[Queue.MutableAttribute[_]]) {
+  def attributes_=(attributes: Seq[Queue.MutableAttribute[_]]): Unit = {
     val request = setQueueAttributesRequest(requireQueueUrl, attributes)
-    retryPolicy.retry("Queue(%s).attributes = ..." format queueName)(sqsClient.setQueueAttributes(request))
+    retryPolicy.retry(s"Queue($queueName).attributes = ...")(sqsClient.setQueueAttributes(request))
   }
 
   /**
@@ -85,21 +84,17 @@ trait SyncQueue[M] extends Queue[M] {
    *
    * @param attributes The attributes to configure for this queue.
    */
-  def createQueue(attributes: Seq[Queue.MutableAttribute[_]] = Seq.empty) {
+  def createQueue(attributes: Seq[Queue.MutableAttribute[_]] = Seq.empty): Unit = {
     val request = createQueueRequest(attributes)
-    val result = retryPolicy.retry("Queue(%s).createQueue" format queueName)(sqsClient.createQueue(request))
-    synchronized {
-      cachedQueueUrl = Some(Some(createQueueResult(result)))
-    }
+    val result = retryPolicy.retry(s"Queue($queueName).createQueue")(sqsClient.createQueue(request))
+    cachedQueueUrl.put(Some(createQueueResult(result)))
   }
 
   /** Deletes this queue in the cloud if it exists. */
-  def deleteQueue_!() {
+  def deleteQueue_!(): Unit = {
     val request = deleteQueueRequest(requireQueueUrl)
-    retryPolicy.retry("Queue(%s).deleteQueue_!" format queueName)(sqsClient.deleteQueue(request))
-    synchronized {
-      cachedQueueUrl = Some(None)
-    }
+    retryPolicy.retry(s"Queue($queueName).deleteQueue_!")(sqsClient.deleteQueue(request))
+    cachedQueueUrl.put(None)
   }
 
   /**
@@ -112,7 +107,7 @@ trait SyncQueue[M] extends Queue[M] {
    */
   def send(msg: M, delaySeconds: Int = -1): Message.Sent[M] = {
     val request = sendMessageRequest(requireQueueUrl, msg, delaySeconds)
-    val result = retryPolicy.retry("Queue(%s).send" format queueName)(sqsClient.sendMessage(request))
+    val result = retryPolicy.retry(s"Queue($queueName).send")(sqsClient.sendMessage(request))
     sendMessageResult(result, msg)
   }
 
@@ -128,7 +123,7 @@ trait SyncQueue[M] extends Queue[M] {
     val typeCls = implicitly[BatchEntry[E]]
     val messages = entries map (e => (typeCls.body(e), typeCls.delaySeconds(e)))
     val request = sendMessageBatchRequest(requireQueueUrl, messages)
-    val result = retryPolicy.retry("Queue(%s).sendBatch" format queueName)(sqsClient.sendMessageBatch(request))
+    val result = retryPolicy.retry(s"Queue($queueName).sendBatch")(sqsClient.sendMessageBatch(request))
     sendMessageBatchResult(result, messages)
   }
 
@@ -154,7 +149,7 @@ trait SyncQueue[M] extends Queue[M] {
       visibilityTimeout,
       waitTimeSeconds,
       attributes)
-    val result = retryPolicy.retry("Queue(%s).receive" format queueName)(sqsClient.receiveMessage(request))
+    val result = retryPolicy.retry(s"Queue($queueName).receive")(sqsClient.receiveMessage(request))
     receiveMessageResult(result)
   }
 
@@ -166,7 +161,7 @@ trait SyncQueue[M] extends Queue[M] {
    */
   def changeVisibility(receipt: Message.Receipt[M], visibilityTimeout: Int): Message.Changed[M] = {
     val request = changeMessageVisibilityRequest(requireQueueUrl, receipt, visibilityTimeout)
-    retryPolicy.retry("Queue(%s).changeVisibility" format queueName)(sqsClient.changeMessageVisibility(request))
+    retryPolicy.retry(s"Queue($queueName).changeVisibility")(sqsClient.changeMessageVisibility(request))
     changeMessageVisibilityResult(receipt)
   }
 
@@ -177,7 +172,7 @@ trait SyncQueue[M] extends Queue[M] {
    */
   def changeVisibilityBatch(entries: (Message.Receipt[M], Int)*): Seq[Message[M]] = {
     val request = changeMessageVisibilityBatchRequest(requireQueueUrl, entries)
-    val result = retryPolicy.retry("Queue(%s).changeVisibilityBatch" format queueName) {
+    val result = retryPolicy.retry(s"Queue($queueName).changeVisibilityBatch") {
       sqsClient.changeMessageVisibilityBatch(request)
     }
     changeMessageVisibilityBatchResult(result, entries)
@@ -190,7 +185,7 @@ trait SyncQueue[M] extends Queue[M] {
    */
   def delete(receipt: Message.Receipt[M]): Message.Deleted[M] = {
     val request = deleteMessageRequest(requireQueueUrl, receipt)
-    retryPolicy.retry("Queue(%s).delete" format queueName)(sqsClient.deleteMessage(request))
+    retryPolicy.retry(s"Queue($queueName).delete")(sqsClient.deleteMessage(request))
     deleteMessageResult(receipt)
   }
 
@@ -201,13 +196,12 @@ trait SyncQueue[M] extends Queue[M] {
    */
   def deleteBatch(receipts: Message.Receipt[M]*): Seq[Message[M]] = {
     val request = deleteMessageBatchRequest(requireQueueUrl, receipts)
-    val result = retryPolicy.retry("Queue(%s).deleteBatch" format queueName)(sqsClient.deleteMessageBatch(request))
+    val result = retryPolicy.retry(s"Queue($queueName).deleteBatch")(sqsClient.deleteMessageBatch(request))
     deleteMessageBatchResult(result, receipts)
   }
 
   /** Returns the queue URL or throws an exception if it does not exist. */
-  private def requireQueueUrl: String = queueUrl getOrElse {
-    throw new IllegalStateException("Queue %s does not exist." format queueName)
-  }
+  private def requireQueueUrl: String =
+    queueUrl getOrElse { throw new QueueDoesNotExistException(s"Queue $queueName does not exist.") }
 
 }

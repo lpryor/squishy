@@ -16,10 +16,11 @@
  */
 package squishy
 
+import collection.JavaConverters._
+import concurrent.SyncVar
+
 import com.amazonaws.services.sqs.AmazonSQS
 import com.amazonaws.services.sqs.model._
-
-import collection.JavaConverters._
 
 /**
  * Base type for views onto SQS queues.
@@ -57,12 +58,11 @@ trait Queue[M] {
    */
   val queueOwner: Option[String] = None
 
-  /** A strategy for handling errors when interacting with SQS. Defaults to [[squishy.RetryPolicy.NoRetry]]. */
-  lazy val retryPolicy: RetryPolicy = RetryPolicy.NoRetry
+  /** A strategy for handling errors when interacting with SQS. Defaults to [[squishy.RetryPolicy.Never]]. */
+  lazy val retryPolicy: RetryPolicy = RetryPolicy.Never
 
   /** The cached queue URL. */
-  @volatile
-  private[squishy] var cachedQueueUrl: Option[Option[String]] = None
+  private[squishy] val cachedQueueUrl = new SyncVar[Option[String]]()
 
   /** Utility method that constructs a `GetQueueUrlRequest` instance. */
   protected def getQueueUrlRequest(): GetQueueUrlRequest =
