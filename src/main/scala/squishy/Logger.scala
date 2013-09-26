@@ -42,16 +42,21 @@ object Logger {
   trait Console extends Logger {
 
     /** @inheritdoc */
-    override def warn(message: String) {
-      Console.println("[WARN]  " + message)
+    override def warn(message: String) = {
+      println(message)
     }
 
     /** @inheritdoc */
-    override def error(message: String, t: Throwable) {
-      Console.println("[ERROR] " + message)
+    override def error(message: String, t: Throwable) = {
+      println(s"[ERROR] $message")
       t.printStackTrace()
     }
 
   }
+
+  /**
+   * A global console logger.
+   */
+  object Console extends Console
 
 }

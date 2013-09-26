@@ -17,21 +17,22 @@
 package squishy
 package examples
 
+import io.Source
+
 /**
  * A simple example that shows sending and receiving in separate threads.
  */
 object SendReceiveExample extends App {
 
-  @volatile
-  var terminated = false
-
   // Create a queue and ensure that it exists in the cloud.
   val queue = new MyQueue
   if (!queue.exists)
-    queue.createQueue()
+    queue.createQueue(Queue.ReceiveMessageWaitTimeSeconds -> 1)
 
   // Launch a thread to read messages and print them to stdout.
-  new Thread(new Runnable() {
+  @volatile
+  var terminated = false
+  new Thread {
     override def run() {
       while (!terminated)
         queue.receive() foreach { receipt =>
@@ -39,17 +40,11 @@ object SendReceiveExample extends App {
           queue.delete(receipt)
         }
     }
-  }).start()
+  }.start()
 
   // Read from stdin and send any lines as messages.
-  val reader = new java.io.BufferedReader(new java.io.InputStreamReader(System.in))
-  while (!terminated) {
-    val text = reader.readLine()
-    if (text == null || text == "exit")
-      terminated = true
-    else
-      queue.send(MyMessage(text))
-  }
+  Source.fromInputStream(System.in).getLines() takeWhile (_ != "exit") foreach (text => queue.send(MyMessage(text)))
+  terminated = true
 
   /**
    * A simple custom message class.

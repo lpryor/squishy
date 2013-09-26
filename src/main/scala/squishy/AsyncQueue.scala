@@ -23,6 +23,7 @@ import com.amazonaws.AmazonWebServiceRequest
 import com.amazonaws.handlers.AsyncHandler
 import com.amazonaws.services.sqs.AmazonSQSAsync
 import com.amazonaws.services.sqs.model._
+import java.util.concurrent.{ Future => JFuture }
 
 /**
  * A wrapper around an asynchronous SNS queue that supports idiomatic Scala.
@@ -33,8 +34,6 @@ import com.amazonaws.services.sqs.model._
  * @tparam M The type of message that can be sent to and received from this queue.
  */
 trait AsyncQueue[M] extends Queue[M] {
-
-  import AsyncQueue._
 
   /** @inheritdoc. */
   override val sqsClient: AmazonSQSAsync
@@ -52,22 +51,20 @@ trait AsyncQueue[M] extends Queue[M] {
    * Returns the URL of this queue if it exists.
    */
   def queueUrlAsync: Future[Option[String]] =
-    if (cachedQueueUrl.isSet) Future.successful(cachedQueueUrl.get)
-    else {
-      val request = getQueueUrlRequest()
-      retryPolicy.retryAsync(s"Queue($queueName).queueUrlAsync") {
-        val outcome = Promise[GetQueueUrlResult]()
-        sqsClient.getQueueUrlAsync(request, outcome)
-        outcome.future map { result =>
-          Some(result)
-        } recover {
-          case e: QueueDoesNotExistException => None
+    cachedQueueUrl match {
+      case Some(queueUrl) =>
+        Future.successful(queueUrl)
+      case None =>
+        val request = newGetQueueUrlRequest()
+        retryPolicy.retryAsync(s"Queue($queueName).queueUrlAsync") {
+          call(sqsClient.getQueueUrlAsync, request) map (Some(_)) recover {
+            case e: QueueDoesNotExistException => None
+          }
         } map { result =>
-          if (!cachedQueueUrl.isSet)
-            cachedQueueUrl.put(result map getQueueUrlResult)
+          val queueUrl = Some(result map getQueueUrlResultToQueueUrl)
+          synchronized(if (cachedQueueUrl.isEmpty) cachedQueueUrl = queueUrl)
           cachedQueueUrl.get
         }
-      }
     }
 
   /**
@@ -84,12 +81,10 @@ trait AsyncQueue[M] extends Queue[M] {
   def attributesAsync(keys: Queue.Key[_]*): Future[Queue.AttributeSet] =
     queueUrlAsync flatMap {
       case Some(queueUrl) =>
-        val request = getQueueAttributesRequest(queueUrl, keys: _*)
+        val request = newGetQueueAttributesRequest(queueUrl, keys: _*)
         retryPolicy.retryAsync(s"Queue($queueName).attributesAsync") {
-          val outcome = Promise[GetQueueAttributesResult]()
-          sqsClient.getQueueAttributesAsync(request, outcome)
-          outcome.future map getQueueAttributesResult
-        }
+          call(sqsClient.getQueueAttributesAsync, request)
+        } map getQueueAttributesResultToAttributeSet
       case None =>
         Future.successful(Queue.AttributeSet())
     }
@@ -101,12 +96,10 @@ trait AsyncQueue[M] extends Queue[M] {
    */
   def attributesAsync_=(attributes: Seq[Queue.MutableAttribute[_]]): Future[Unit] =
     requireQueueUrlAsync flatMap { queueUrl =>
-      val request = setQueueAttributesRequest(queueUrl, attributes)
+      val request = newSetQueueAttributesRequest(queueUrl, attributes)
       retryPolicy.retryAsync(s"Queue($queueName).attributesAsync = ...") {
-        val outcome = Promise[Void]()
-        sqsClient.setQueueAttributesAsync(request, outcome)
-        outcome.future map (_ => ())
-      }
+        call(sqsClient.setQueueAttributesAsync, request)
+      } map (_ => ())
     }
 
   /**
@@ -116,14 +109,13 @@ trait AsyncQueue[M] extends Queue[M] {
    *
    * @param attributes The attributes to configure for this queue.
    */
-  def createQueueAsync(attributes: Seq[Queue.MutableAttribute[_]] = Seq.empty): Future[Unit] = {
-    val request = createQueueRequest(attributes)
+  def createQueueAsync(attributes: Queue.MutableAttribute[_]*): Future[Unit] = {
+    val request = newCreateQueueRequest(attributes)
     retryPolicy.retryAsync(s"Queue($queueName).createQueueAsync") {
-      val outcome = Promise[CreateQueueResult]()
-      sqsClient.createQueueAsync(request, outcome)
-      outcome.future map { result =>
-        cachedQueueUrl.put(Some(createQueueResult(result)))
-      }
+      call(sqsClient.createQueueAsync, request)
+    } map { result =>
+      val queueUrl = Some(Some(createQueueResultToQueueUrl(result)))
+      synchronized(cachedQueueUrl = queueUrl)
     }
   }
 
@@ -132,11 +124,12 @@ trait AsyncQueue[M] extends Queue[M] {
    */
   def deleteQueueAsync_!(): Future[Unit] =
     requireQueueUrlAsync flatMap { queueUrl =>
-      val request = deleteQueueRequest(queueUrl)
+      val request = newDeleteQueueRequest(queueUrl)
       retryPolicy.retryAsync(s"Queue($queueName).deleteQueueAsync_!") {
-        val outcome = Promise[Void]()
-        sqsClient.deleteQueueAsync(request, outcome)
-        outcome.future map (_ => cachedQueueUrl.put(None))
+        call(sqsClient.deleteQueueAsync, request)
+      } map { result =>
+        val queueUrl = Some(None)
+        synchronized(cachedQueueUrl = queueUrl)
       }
     }
 
@@ -150,12 +143,10 @@ trait AsyncQueue[M] extends Queue[M] {
    */
   def sendAsync(msg: M, delaySeconds: Int = -1): Future[Message.Sent[M]] =
     requireQueueUrlAsync flatMap { queueUrl =>
-      val request = sendMessageRequest(queueUrl, msg, delaySeconds)
+      val request = newSendMessageRequest(queueUrl, msg, delaySeconds)
       retryPolicy.retryAsync(s"Queue($queueName).sendAsync") {
-        val outcome = Promise[SendMessageResult]()
-        sqsClient.sendMessageAsync(request, outcome)
-        outcome.future map (sendMessageResult(_, msg))
-      }
+        call(sqsClient.sendMessageAsync, request)
+      } map (sendMessageResultToMessage(_, msg))
     }
 
   /**
@@ -168,14 +159,12 @@ trait AsyncQueue[M] extends Queue[M] {
    */
   def sendBatchAsync[E: BatchEntry](entries: E*): Future[Seq[Message[M]]] =
     requireQueueUrlAsync flatMap { queueUrl =>
-      val typeCls = implicitly[BatchEntry[E]]
-      val messages = entries map (e => (typeCls.body(e), typeCls.delaySeconds(e)))
-      val request = sendMessageBatchRequest(queueUrl, messages)
+      val entry = implicitly[BatchEntry[E]]
+      val messages = entries map entry
+      val request = newSendMessageBatchRequest(queueUrl, messages)
       retryPolicy.retryAsync(s"Queue($queueName).sendBatchAsync") {
-        val outcome = Promise[SendMessageBatchResult]()
-        sqsClient.sendMessageBatchAsync(request, outcome)
-        outcome.future map (sendMessageBatchResult(_, messages))
-      }
+        call(sqsClient.sendMessageBatchAsync, request)
+      } map (sendMessageBatchResultToMessages(_, messages))
     }
 
   /**
@@ -195,17 +184,15 @@ trait AsyncQueue[M] extends Queue[M] {
     attributes: Seq[Message.Key[_]] = Seq.empty //
     ): Future[Seq[Message.Receipt[M]]] =
     requireQueueUrlAsync flatMap { queueUrl =>
-      val request = receiveMessageRequest(
+      val request = newReceiveMessageRequest(
         queueUrl,
         maxNumberOfMessages,
         visibilityTimeout,
         waitTimeSeconds,
         attributes)
       retryPolicy.retryAsync(s"Queue($queueName).receiveAsync") {
-        val outcome = Promise[ReceiveMessageResult]()
-        sqsClient.receiveMessageAsync(request, outcome)
-        outcome.future map receiveMessageResult
-      }
+        call(sqsClient.receiveMessageAsync, request)
+      } map receiveMessageResultToMessages
     }
 
   /**
@@ -216,12 +203,10 @@ trait AsyncQueue[M] extends Queue[M] {
    */
   def changeVisibilityAsync(receipt: Message.Receipt[M], visibilityTimeout: Int): Future[Message.Changed[M]] =
     requireQueueUrlAsync flatMap { queueUrl =>
-      val request = changeMessageVisibilityRequest(queueUrl, receipt, visibilityTimeout)
+      val request = newChangeMessageVisibilityRequest(queueUrl, receipt, visibilityTimeout)
       retryPolicy.retryAsync(s"Queue($queueName).changeVisibilityAsync") {
-        val outcome = Promise[Void]()
-        sqsClient.changeMessageVisibilityAsync(request, outcome)
-        outcome.future map (_ => changeMessageVisibilityResult(receipt))
-      }
+        call(sqsClient.changeMessageVisibilityAsync, request)
+      } map (_ => changeMessageVisibilityResultToMessage(receipt))
     }
 
   /**
@@ -231,12 +216,10 @@ trait AsyncQueue[M] extends Queue[M] {
    */
   def changeVisibilityBatchAsync(entries: (Message.Receipt[M], Int)*): Future[Seq[Message[M]]] =
     requireQueueUrlAsync flatMap { queueUrl =>
-      val request = changeMessageVisibilityBatchRequest(queueUrl, entries)
+      val request = newChangeMessageVisibilityBatchRequest(queueUrl, entries)
       retryPolicy.retryAsync(s"Queue($queueName).changeVisibilityBatchAsync") {
-        val outcome = Promise[ChangeMessageVisibilityBatchResult]()
-        sqsClient.changeMessageVisibilityBatchAsync(request, outcome)
-        outcome.future map (changeMessageVisibilityBatchResult(_, entries))
-      }
+        call(sqsClient.changeMessageVisibilityBatchAsync, request)
+      } map (changeMessageVisibilityBatchResultToMessages(_, entries))
     }
 
   /**
@@ -246,12 +229,10 @@ trait AsyncQueue[M] extends Queue[M] {
    */
   def deleteAsync(receipt: Message.Receipt[M]): Future[Message.Deleted[M]] =
     requireQueueUrlAsync flatMap { queueUrl =>
-      val request = deleteMessageRequest(queueUrl, receipt)
+      val request = newDeleteMessageRequest(queueUrl, receipt)
       retryPolicy.retryAsync(s"Queue($queueName).deleteAsync") {
-        val outcome = Promise[Void]()
-        sqsClient.deleteMessageAsync(request, outcome)
-        outcome.future map (_ => deleteMessageResult(receipt))
-      }
+        call(sqsClient.deleteMessageAsync, request)
+      } map (_ => deleteMessageResultToMessage(receipt))
     }
 
   /**
@@ -261,33 +242,27 @@ trait AsyncQueue[M] extends Queue[M] {
    */
   def deleteBatchAsync(receipts: Message.Receipt[M]*): Future[Seq[Message[M]]] =
     requireQueueUrlAsync flatMap { queueUrl =>
-      val request = deleteMessageBatchRequest(queueUrl, receipts)
+      val request = newDeleteMessageBatchRequest(queueUrl, receipts)
       retryPolicy.retryAsync(s"Queue($queueName).deleteBatchAsync") {
-        val outcome = Promise[DeleteMessageBatchResult]()
-        sqsClient.deleteMessageBatchAsync(request, outcome)
-        outcome.future map (deleteMessageBatchResult(_, receipts))
-      }
+        call(sqsClient.deleteMessageBatchAsync, request)
+      } map (deleteMessageBatchResultToMessages(_, receipts))
     }
 
   /** Applies a function with the queue URL or signals an exception if it does not exist. */
   private def requireQueueUrlAsync: Future[String] =
     queueUrlAsync flatMap {
       case Some(url) => Future.successful(url)
-      case None => Future.failed(new QueueDoesNotExistException(s"Queue $queueName does not exist."))
+      case None => Future.failed(new QueueDoesNotExistException(s"""Queue "$queueName" does not exist."""))
     }
 
-}
-
-/**
- * Definitions associated with asynchronous queues.
- */
-object AsyncQueue {
-
-  /** Implicitly converts a callback into an AWS `AsyncHandler`. */
-  private implicit def promiseToAsyncHandler[I <: AmazonWebServiceRequest, O](promise: Promise[O]): AsyncHandler[I, O] =
-    new AsyncHandler[I, O] {
-      override def onSuccess(request: I, result: O) = promise.success(result)
-      override def onError(thrown: Exception) = promise.failure(thrown)
-    }
+  /** Invokes an AWS async method and returns a Scala future. */
+  private def call[I <: AmazonWebServiceRequest, O](f: (I, AsyncHandler[I, O]) => JFuture[O], i: I): Future[O] = {
+    val outcome = Promise[O]()
+    f(i, new AsyncHandler[I, O] {
+      override def onSuccess(request: I, result: O) = outcome.success(result)
+      override def onError(thrown: Exception) = outcome.failure(thrown)
+    })
+    outcome.future
+  }
 
 }

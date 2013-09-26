@@ -21,7 +21,7 @@ package squishy
 import concurrent.{ blocking, ExecutionContext, Future, Promise }
 import concurrent.duration._
 import util.{ Try, Success, Failure }
-
+import util.control.NonFatal
 import com.amazonaws.AmazonServiceException
 
 /**
@@ -45,6 +45,17 @@ object RetryPolicy {
   /** An exception that will not cause policy implementations to issue any warning messages. */
   class RetrySilentlyException extends RuntimeException
 
+  /**
+   * Extracts only errors that interrupt retry attempts.
+   */
+  object FatalError {
+    def unapply(thrown: Throwable): Option[Throwable] = thrown match {
+      case e: AmazonServiceException if e.getErrorType == AmazonServiceException.ErrorType.Client => Some(e)
+      case NonFatal(e) => None
+      case e => Some(e)
+    }
+  }
+
   /** A policy that will not attempt to retry failed operations. */
   object Never extends RetryPolicy {
 
@@ -60,22 +71,25 @@ object RetryPolicy {
    * A policy that will attempt an operation repeatedly with an increasing sleep period between attempts and
    * ultimately terminate after a specified duration.
    */
-  class FibonacciBackoff(val retryDuration: Duration, val log: Logger) extends RetryPolicy {
+  class FibonacciBackoff(
+    val retryDuration: Duration = Duration.Inf,
+    val logger: Logger = Logger.Console)
+    extends RetryPolicy {
 
     /** @inheritdoc */
     override def retry[T](operation: String)(f: => T): T = {
-      val endAt = now + retryDuration.toMillis
+      val startAt = now
       var backoff = 100L
       while (true) {
         try return f catch {
-          case e: AmazonServiceException if e.getErrorType == AmazonServiceException.ErrorType.Client =>
+          case FatalError(e) =>
             logInterrupted(operation, e)
             throw e
-          case e: Exception if now + backoff < endAt =>
+          case e if (now + backoff - startAt).millis < retryDuration =>
             logRetrying(operation, e, backoff)
             sleep(backoff)
             backoff = nextBackoff(backoff)
-          case e: Exception =>
+          case e: Throwable =>
             logAborting(operation, e)
             throw e
         }
@@ -86,22 +100,22 @@ object RetryPolicy {
     /** @inheritdoc */
     override def retryAsync[T](operation: String)(f: => Future[T])(implicit context: ExecutionContext) = {
       val outcome = Promise[T]()
-      val endAt = now + retryDuration.toMillis
+      val startAt = now
       var backoff = 100L
       lazy val callback: Try[T] => Unit = {
         case Success(result) =>
           outcome.success(result)
         case Failure(thrown) =>
           thrown match {
-            case e: AmazonServiceException if e.getErrorType == AmazonServiceException.ErrorType.Client =>
+            case FatalError(e) =>
               logInterrupted(operation, e)
               outcome.failure(e)
-            case e: Exception if now + backoff < endAt =>
+            case e if (now + backoff - startAt).millis < retryDuration =>
               logRetrying(operation, e, backoff)
               sleep(backoff)
               backoff = nextBackoff(backoff)
               f.onComplete(callback)
-            case e: Exception =>
+            case e =>
               logAborting(operation, e)
               outcome.failure(e)
           }
@@ -112,30 +126,29 @@ object RetryPolicy {
 
     /** Returns the current time in milliseconds. */
     private def now = System.currentTimeMillis
-    
+
     /** Sleeps for the specified number of milliseconds. */
     private def sleep(duration: Long) = blocking(Thread.sleep(duration))
 
     /** Calculates the next back-off duration from the current back-off duration. */
-    private def nextBackoff(backoff: Long) =
-      math.min(backoff * 8 / 5, 10.minutes.toMillis)
+    private def nextBackoff(backoff: Long) = backoff * 8 / 5
 
     /** Logs a warning about the specified exception if it is not marked as silent. */
     private def logRetrying(operation: String, thrown: Throwable, sleepFor: Long) =
       if (!thrown.isInstanceOf[RetrySilentlyException]) {
         val name = thrown.getClass.getName
         val msg = Option(thrown.getMessage) getOrElse ""
-        log.warn(s"Exception during $operation:\n$name: $msg")
-        log.warn(s"Sleeping $sleepFor ms ...")
+        logger.warn(s"""|Exception during $operation: $name: $msg
+                     |Sleeping $sleepFor ms ...""".stripMargin)
       }
 
     /** Logs an error about the specified interrupting exception. */
     private def logInterrupted(operation: String, thrown: Throwable) =
-      log.error(s"Operation $operation interrupted.", thrown)
+      logger.error(s"Operation $operation interrupted.", thrown)
 
     /** Logs an error about the specified aborting exception. */
     private def logAborting(operation: String, thrown: Throwable) =
-      log.error(s"Too many exception during $operation... aborting.", thrown)
+      logger.error(s"Too many exception during $operation... aborting.", thrown)
 
   }
 

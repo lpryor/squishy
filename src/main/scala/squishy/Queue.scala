@@ -17,7 +17,6 @@
 package squishy
 
 import collection.JavaConverters._
-import concurrent.SyncVar
 
 import com.amazonaws.services.sqs.AmazonSQS
 import com.amazonaws.services.sqs.model._
@@ -56,35 +55,36 @@ trait Queue[M] {
    * The AWS account ID of the owner of the queue to access. Defaults to [[scala.None]], which will use the account
    * associated with `sqsClient`.
    */
-  val queueOwner: Option[String] = None
+  lazy val queueOwner: Option[String] = None
 
   /** A strategy for handling errors when interacting with SQS. Defaults to [[squishy.RetryPolicy.Never]]. */
   lazy val retryPolicy: RetryPolicy = RetryPolicy.Never
 
   /** The cached queue URL. */
-  private[squishy] val cachedQueueUrl = new SyncVar[Option[String]]()
+  @volatile
+  private[squishy] var cachedQueueUrl: Option[Option[String]] = None
 
   /** Utility method that constructs a `GetQueueUrlRequest` instance. */
-  protected def getQueueUrlRequest(): GetQueueUrlRequest =
+  protected def newGetQueueUrlRequest(): GetQueueUrlRequest =
     new GetQueueUrlRequest()
       .withQueueName(queueName)
       .withQueueOwnerAWSAccountId(queueOwner.orNull)
 
   /** Utility method that extracts a `GetQueueUrlResult` instance. */
-  protected def getQueueUrlResult(result: GetQueueUrlResult): String = result.getQueueUrl
+  protected def getQueueUrlResultToQueueUrl(result: GetQueueUrlResult): String = result.getQueueUrl
 
   /** Utility method that constructs a `GetQueueAttributesRequest` instance. */
-  protected def getQueueAttributesRequest(queueUrl: String, keys: Queue.Key[_]*): GetQueueAttributesRequest =
+  protected def newGetQueueAttributesRequest(queueUrl: String, keys: Queue.Key[_]*): GetQueueAttributesRequest =
     new GetQueueAttributesRequest()
       .withQueueUrl(queueUrl)
       .withAttributeNames(keys.map(_.name).asJavaCollection)
 
-  /** Utility method that extracts a `GetQueueAttributesResult` instance. */
-  protected def getQueueAttributesResult(result: GetQueueAttributesResult): Queue.AttributeSet =
+  /** Utility method that extracts from a `GetQueueAttributesResult` instance. */
+  protected def getQueueAttributesResultToAttributeSet(result: GetQueueAttributesResult): Queue.AttributeSet =
     Queue.AttributeSet(result.getAttributes.asScala)
 
   /** Utility method that constructs a `SetQueueAttributesRequest` instance. */
-  protected def setQueueAttributesRequest(
+  protected def newSetQueueAttributesRequest(
     queueUrl: String,
     attributes: Seq[Queue.MutableAttribute[_]] //
     ): SetQueueAttributesRequest =
@@ -93,34 +93,33 @@ trait Queue[M] {
       .withAttributes(Queue.AttributeSet.unapply(attributes: _*).get.asJava)
 
   /** Utility method that constructs a `CreateQueueRequest` instance. */
-  protected def createQueueRequest(attributes: Seq[Queue.MutableAttribute[_]]): CreateQueueRequest =
+  protected def newCreateQueueRequest(attributes: Seq[Queue.MutableAttribute[_]]): CreateQueueRequest =
     new CreateQueueRequest()
       .withQueueName(queueName)
       .withAttributes(Queue.AttributeSet.unapply(attributes: _*).get.asJava)
 
   /** Utility method that extracts a `CreateQueueResult` instance. */
-  protected def createQueueResult(result: CreateQueueResult): String = result.getQueueUrl
+  protected def createQueueResultToQueueUrl(result: CreateQueueResult): String = result.getQueueUrl
 
   /** Utility method that constructs a `DeleteQueueRequest` instance. */
-  protected def deleteQueueRequest(queueUrl: String): DeleteQueueRequest =
+  protected def newDeleteQueueRequest(queueUrl: String): DeleteQueueRequest =
     new DeleteQueueRequest().withQueueUrl(queueUrl)
 
   /** Utility method that constructs a `SendMessageRequest` instance. */
-  protected def sendMessageRequest(queueUrl: String, msg: M, delaySeconds: Int): SendMessageRequest = {
+  protected def newSendMessageRequest(queueUrl: String, msg: M, delaySeconds: Int): SendMessageRequest = {
     val request = new SendMessageRequest()
       .withQueueUrl(queueUrl)
       .withMessageBody(messageMapper(msg))
-    if (delaySeconds >= 0)
-      request.setDelaySeconds(delaySeconds)
+    if (delaySeconds >= 0) request.setDelaySeconds(delaySeconds)
     request
   }
 
   /** Utility method that extracts a `SendMessageResult` instance. */
-  protected def sendMessageResult(result: SendMessageResult, msg: M): Message.Sent[M] =
+  protected def sendMessageResultToMessage(result: SendMessageResult, msg: M): Message.Sent[M] =
     Message.Sent(result.getMessageId, result.getMD5OfMessageBody, msg)
 
   /** Utility method that constructs a `SendMessageBatchRequest` instance. */
-  protected def sendMessageBatchRequest(queueUrl: String, entries: Seq[(M, Int)]): SendMessageBatchRequest =
+  protected def newSendMessageBatchRequest(queueUrl: String, entries: Seq[(M, Int)]): SendMessageBatchRequest =
     new SendMessageBatchRequest()
       .withQueueUrl(queueUrl)
       .withEntries(entries.zipWithIndex.map {
@@ -128,13 +127,15 @@ trait Queue[M] {
           val entry = new SendMessageBatchRequestEntry()
             .withId(id.toString)
             .withMessageBody(messageMapper(msg))
-          if (delaySeconds >= 0)
-            entry.setDelaySeconds(delaySeconds)
+          if (delaySeconds >= 0) entry.setDelaySeconds(delaySeconds)
           entry
       }.asJava)
 
   /** Utility method that extracts a `SendMessageBatchResult` instance. */
-  protected def sendMessageBatchResult(result: SendMessageBatchResult, entries: Seq[(M, Int)]): Seq[Message[M]] = {
+  protected def sendMessageBatchResultToMessages(
+    result: SendMessageBatchResult,
+    entries: Seq[(M, Int)] //
+    ): Seq[Message[M]] = {
     val messages = entries.toIndexedSeq
     val results = collection.mutable.IndexedSeq.fill[Message[M]](messages.length)(null)
     result.getSuccessful.asScala foreach { e =>
@@ -149,7 +150,7 @@ trait Queue[M] {
   }
 
   /** Utility method that constructs a `ReceiveMessageRequest` instance. */
-  protected def receiveMessageRequest(
+  protected def newReceiveMessageRequest(
     queueUrl: String,
     maxNumberOfMessages: Int,
     visibilityTimeout: Int,
@@ -157,31 +158,26 @@ trait Queue[M] {
     attributes: Seq[Message.Key[_]] //
     ): ReceiveMessageRequest = {
     val request = new ReceiveMessageRequest().withQueueUrl(queueUrl)
-    if (maxNumberOfMessages >= 0)
-      request.setMaxNumberOfMessages(maxNumberOfMessages)
-    if (visibilityTimeout >= 0)
-      request.setVisibilityTimeout(visibilityTimeout)
-    if (waitTimeSeconds >= 0)
-      request.setWaitTimeSeconds(waitTimeSeconds)
-    if (attributes.nonEmpty)
-      request.setAttributeNames(attributes.map(_.name).asJavaCollection)
+    if (maxNumberOfMessages >= 0) request.setMaxNumberOfMessages(maxNumberOfMessages)
+    if (visibilityTimeout >= 0) request.setVisibilityTimeout(visibilityTimeout)
+    if (waitTimeSeconds >= 0) request.setWaitTimeSeconds(waitTimeSeconds)
+    if (attributes.nonEmpty) request.setAttributeNames(attributes.map(_.name).asJavaCollection)
     request
   }
 
   /** Utility method that extracts a `ReceiveMessageResult` instance. */
-  protected def receiveMessageResult(result: ReceiveMessageResult): Seq[Message.Receipt[M]] =
+  protected def receiveMessageResultToMessages(result: ReceiveMessageResult): Seq[Message.Receipt[M]] =
     result.getMessages.asScala.map { m =>
       Message.Receipt(
         m.getMessageId,
         m.getMD5OfBody,
         m.getReceiptHandle,
         Message.AttributeSet(m.getAttributes.asScala),
-        messageMapper.unapply(m.getBody)
-      )
+        messageMapper.unapply(m.getBody))
     }
 
   /** Utility method that constructs a `ChangeMessageVisibilityRequest` instance. */
-  protected def changeMessageVisibilityRequest(
+  protected def newChangeMessageVisibilityRequest(
     queueUrl: String,
     receipt: Message.Receipt[M],
     visibilityTimeout: Int //
@@ -192,11 +188,11 @@ trait Queue[M] {
       .withVisibilityTimeout(visibilityTimeout)
 
   /** Utility method that handles the result of a `ChangeMessageVisibilityRequest` operation. */
-  protected def changeMessageVisibilityResult(receipt: Message.Receipt[M]): Message.Changed[M] =
+  protected def changeMessageVisibilityResultToMessage(receipt: Message.Receipt[M]): Message.Changed[M] =
     Message.Changed(receipt.body)
 
   /** Utility method that constructs a `ChangeMessageVisibilityBatchRequest` instance. */
-  protected def changeMessageVisibilityBatchRequest(
+  protected def newChangeMessageVisibilityBatchRequest(
     queueUrl: String,
     entries: Seq[(Message.Receipt[M], Int)] //
     ): ChangeMessageVisibilityBatchRequest =
@@ -211,7 +207,7 @@ trait Queue[M] {
       }.asJava)
 
   /** Utility method that extracts a `ChangeMessageVisibilityBatchResult` instance. */
-  protected def changeMessageVisibilityBatchResult(
+  protected def changeMessageVisibilityBatchResultToMessages(
     result: ChangeMessageVisibilityBatchResult,
     entries: Seq[(Message.Receipt[M], Int)] //
     ): Seq[Message[M]] = {
@@ -229,17 +225,17 @@ trait Queue[M] {
   }
 
   /** Utility method that constructs a `DeleteMessageRequest` instance. */
-  protected def deleteMessageRequest(queueUrl: String, receipt: Message.Receipt[M]): DeleteMessageRequest =
+  protected def newDeleteMessageRequest(queueUrl: String, receipt: Message.Receipt[M]): DeleteMessageRequest =
     new DeleteMessageRequest()
       .withQueueUrl(queueUrl)
       .withReceiptHandle(receipt.handle)
 
   /** Utility method that handles the result of a `DeleteMessageRequest` operation. */
-  protected def deleteMessageResult(receipt: Message.Receipt[M]): Message.Deleted[M] =
+  protected def deleteMessageResultToMessage(receipt: Message.Receipt[M]): Message.Deleted[M] =
     Message.Deleted(receipt.body)
 
   /** Utility method that constructs a `DeleteMessageBatchRequest` instance. */
-  protected def deleteMessageBatchRequest(
+  protected def newDeleteMessageBatchRequest(
     queueUrl: String,
     receipts: Seq[Message.Receipt[M]] //
     ): DeleteMessageBatchRequest =
@@ -253,7 +249,7 @@ trait Queue[M] {
       }.asJava)
 
   /** Utility method that extracts a `DeleteMessageBatchResult` instance. */
-  protected def deleteMessageBatchResult(
+  protected def deleteMessageBatchResultToMessages(
     result: DeleteMessageBatchResult,
     receipts: Seq[Message.Receipt[M]] //
     ): Seq[Message[M]] = {
@@ -273,15 +269,7 @@ trait Queue[M] {
   /**
    * Base class for type classes that identify entries in batch operations.
    */
-  sealed trait BatchEntry[-E] {
-
-    /** Extracts the message body from an entry. */
-    def body(entry: E): M
-
-    /** Extracts the number of delay seconds from an entry. */
-    def delaySeconds(entry: E): Int
-
-  }
+  sealed trait BatchEntry[-E] extends (E => (M, Int))
 
   /**
    * Definitions of the supported batch entry type classes.
@@ -294,10 +282,7 @@ trait Queue[M] {
     implicit case object NoDelay extends BatchEntry[M] {
 
       /** @inheritdoc */
-      override def body(entry: M) = entry
-
-      /** @inheritdoc */
-      override def delaySeconds(entry: M) = -1
+      override def apply(entry: M) = entry -> -1
 
     }
 
@@ -307,10 +292,7 @@ trait Queue[M] {
     implicit case object WithDelay extends BatchEntry[(M, Int)] {
 
       /** @inheritdoc */
-      override def body(entry: (M, Int)) = entry._1
-
-      /** @inheritdoc */
-      override def delaySeconds(entry: (M, Int)) = entry._2
+      override def apply(entry: (M, Int)) = entry
 
     }
 
@@ -342,8 +324,7 @@ object Queue extends Attributes {
     Policy,
     QueueArn,
     ReceiveMessageWaitTimeSeconds,
-    VisibilityTimeout
-  )
+    VisibilityTimeout)
 
   /**
    * A marker trait for keys of mutable attributes.

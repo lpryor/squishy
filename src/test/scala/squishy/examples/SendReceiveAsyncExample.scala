@@ -17,45 +17,54 @@
 package squishy
 package examples
 
-import scala.concurrent.ExecutionContext
+import concurrent.{ Await, Future, ExecutionContext }
+import concurrent.duration._
+import io.Source
 
 /**
- * A simple example that shows sending and receiving in asyncronously.
+ * A simple example that shows sending and receiving asynchronously.
  */
 object SendReceiveAsyncExample extends App {
 
-  @volatile
-  var terminated = false
+  // Logs any errors.
+  val logErrors: PartialFunction[Throwable, Unit] = { case e => e.printStackTrace() }
 
   // Create a queue and ensure that it exists in the cloud.
   val queue = new MyQueue
   if (!queue.exists)
-    queue.createQueue()
+    queue.createQueue(Queue.ReceiveMessageWaitTimeSeconds -> 1)
 
+  // Use the queue's thread pool.
   import queue.executionContext
 
-  // Continuously receive messages and print to stdout until terminated.
-  def doReceive() {
-    queue.receiveAsync() onSuccess {
-      case receipts =>
-        receipts foreach (r => println(r.body.text))
-        queue.deleteBatch(receipts: _*)
-        doReceive()
+  // Read from stdin and send any lines as messages until terminated.
+  val stdin = Source.fromInputStream(System.in).getLines()
+  def publish(): Future[Unit] = {
+    (if (stdin.hasNext) stdin.next else "exit") match {
+      case "exit" =>
+        Future.successful(())
+      case "error" =>
+        Future.failed(new RuntimeException)
+      case text =>
+        queue.sendAsync(MyMessage(text)) flatMap (_ => publish())
     }
   }
-  doReceive()
 
-  // Read from stdin and send any lines as messages.
-  val reader = new java.io.BufferedReader(new java.io.InputStreamReader(System.in))
-  def doSend() {
-    val text = reader.readLine()
-    if (text == null || text == "exit") {
-      terminated = true
-      queue.sqsClient.shutdown()
-    } else
-      queue.sendAsync(MyMessage(text)) onSuccess { case _ => doSend() }
+  // Continuously receive messages and print to stdout until terminated.
+  @volatile
+  var terminated = false
+  def consume(): Future[Unit] = {
+    queue.receiveAsync() flatMap { receipts =>
+      receipts foreach (r => println(r.body.text))
+      if (receipts.nonEmpty) queue.deleteBatch(receipts: _*)
+      if (terminated) Future.successful(())
+      else consume()
+    } recover logErrors
   }
-  doSend()
+
+  // Start the publisher an consumer processes and wait for them to complete before shutting down.
+  Await.ready(publish() recover logErrors map (_ => terminated = true) zip consume(), Duration.Inf)
+  queue.sqsClient.shutdown()
 
   /**
    * A simple custom message class.

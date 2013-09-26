@@ -169,17 +169,13 @@ class FakeQueue(val name: String) {
     val startAt = now
     var timeout = waitTime
     var result = None: Option[(Message, String)]
-    do {
-      result = {
-        try
-          Option(queue.poll(timeout, TimeUnit.SECONDS))
-        catch {
-          case _: InterruptedException => None
-        }
-      } flatMap onReceive
-      if (result.isEmpty)
-        timeout = waitTime - (now - startAt)
-    } while (result.isEmpty && timeout > 0)
+    try {
+      do {
+        result = Option(queue.poll(timeout, TimeUnit.SECONDS)) flatMap onReceive
+        if (result.isEmpty)
+          timeout = waitTime - (now - startAt)
+      } while (result.isEmpty && timeout > 0)
+    } catch { case _: InterruptedException => }
     result map { firstMessage =>
       firstMessage :: Stream
         .continually(queue.poll())
