@@ -292,11 +292,9 @@ object FakeQueue {
       }
     }
 
-    /** @inheritdoc */
     override def getDelay(unit: TimeUnit) =
       unit.convert(becomesVisibleAt - now, TimeUnit.SECONDS)
 
-    /** @inheritdoc */
     override def compareTo(delayed: Delayed) = {
       val that = delayed.asInstanceOf[Message]
       if (this.becomesVisibleAt < that.becomesVisibleAt)

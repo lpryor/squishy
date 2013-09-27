@@ -52,7 +52,7 @@ trait Queue[M] {
   val messageMapper: Mapper[M]
 
   /**
-   * The AWS account ID of the owner of the queue to access. Defaults to [[scala.None]], which will use the account
+   * The AWS account ID of the owner of the queue to access. Defaults to `scala.None`, which will use the account
    * associated with `sqsClient`.
    */
   lazy val queueOwner: Option[String] = None
@@ -280,20 +280,14 @@ trait Queue[M] {
      * Type class for batch entries with no initial delay.
      */
     implicit case object NoDelay extends BatchEntry[M] {
-
-      /** @inheritdoc */
       override def apply(entry: M) = entry -> -1
-
     }
 
     /**
      * Type class for batch entries with an initial delay.
      */
     implicit case object WithDelay extends BatchEntry[(M, Int)] {
-
-      /** @inheritdoc */
       override def apply(entry: (M, Int)) = entry
-
     }
 
   }

@@ -51,17 +51,14 @@ class FakeSQS extends AmazonSQS {
   /** Returns the configured region. */
   def region = _region
 
-  /** @inheritdoc */
   override def setEndpoint(endpoint: String) {
     this._endpoint = endpoint
   }
 
-  /** @inheritdoc */
   override def setRegion(region: Region) {
     this._region = region
   }
 
-  /** @inheritdoc */
   override def createQueue(request: CreateQueueRequest) = synchronized {
     requireNotShutdown()
     val queueName = request.getQueueName
@@ -82,27 +79,23 @@ class FakeSQS extends AmazonSQS {
     }
   }
 
-  /** @inheritdoc */
   override def listQueues() = synchronized {
     requireNotShutdown()
     new ListQueuesResult().withQueueUrls(queues.values.map(_.url).asJavaCollection)
   }
 
-  /** @inheritdoc */
   override def listQueues(request: ListQueuesRequest) = synchronized {
     requireNotShutdown()
     val prefix = request.getQueueNamePrefix
     new ListQueuesResult().withQueueUrls(queues.filter(_._1 startsWith prefix).values.map(_.url).asJavaCollection)
   }
 
-  /** @inheritdoc */
   override def deleteQueue(request: DeleteQueueRequest) = synchronized {
     requireNotShutdown()
     if (queues.remove(request.getQueueUrl).isEmpty)
       throw new QueueDoesNotExistException(request.getQueueUrl)
   }
 
-  /** @inheritdoc */
   override def getQueueUrl(request: GetQueueUrlRequest) = synchronized {
     requireNotShutdown()
     queues.values find (_.name == request.getQueueName) match {
@@ -113,7 +106,6 @@ class FakeSQS extends AmazonSQS {
     }
   }
 
-  /** @inheritdoc */
   override def getQueueAttributes(request: GetQueueAttributesRequest) = {
     val queue = getQueue(request.getQueueUrl)
     val attributeNames = request.getAttributeNames.asScala.toSet
@@ -125,7 +117,6 @@ class FakeSQS extends AmazonSQS {
     new GetQueueAttributesResult().withAttributes(attributes.asJava)
   }
 
-  /** @inheritdoc */
   override def setQueueAttributes(request: SetQueueAttributesRequest) = {
     val queue = getQueue(request.getQueueUrl)
     val attributes = request.getAttributes.asScala
@@ -134,7 +125,6 @@ class FakeSQS extends AmazonSQS {
     queue.configureAttributes(attributes)
   }
 
-  /** @inheritdoc */
   override def sendMessage(request: SendMessageRequest) = {
     val queue = getQueue(request.getQueueUrl)
     val messageSize = request.getMessageBody.getBytes("UTF-8").length
@@ -150,7 +140,6 @@ class FakeSQS extends AmazonSQS {
     }
   }
 
-  /** @inheritdoc */
   override def sendMessageBatch(request: SendMessageBatchRequest) = {
     val queue = getQueue(request.getQueueUrl)
     val entries = request.getEntries.asScala
@@ -180,7 +169,6 @@ class FakeSQS extends AmazonSQS {
       .withFailed(failed.asJava)
   }
 
-  /** @inheritdoc */
   override def receiveMessage(request: ReceiveMessageRequest) = {
     val queue = getQueue(request.getQueueUrl)
     val attributeNames = request.getAttributeNames.asScala.toSet
@@ -199,7 +187,6 @@ class FakeSQS extends AmazonSQS {
     new ReceiveMessageResult().withMessages(messages.asJava)
   }
 
-  /** @inheritdoc */
   override def changeMessageVisibility(request: ChangeMessageVisibilityRequest) = {
     val queue = getQueue(request.getQueueUrl)
     if (queue.changeVisibility(
@@ -209,7 +196,6 @@ class FakeSQS extends AmazonSQS {
         "Unable to change the visibility of message with receipt: " + request.getReceiptHandle)
   }
 
-  /** @inheritdoc */
   override def changeMessageVisibilityBatch(request: ChangeMessageVisibilityBatchRequest) = {
     val queue = getQueue(request.getQueueUrl)
     val entries = request.getEntries.asScala
@@ -233,14 +219,12 @@ class FakeSQS extends AmazonSQS {
       .withFailed(failed.asJava)
   }
 
-  /** @inheritdoc */
   override def deleteMessage(request: DeleteMessageRequest) = {
     val queue = getQueue(request.getQueueUrl)
     if (queue.delete(request.getReceiptHandle).isEmpty)
       throw new ReceiptHandleIsInvalidException("Unable to delete the message with receipt: " + request.getReceiptHandle)
   }
 
-  /** @inheritdoc */
   override def deleteMessageBatch(request: DeleteMessageBatchRequest) = {
     val queue = getQueue(request.getQueueUrl)
     val entries = request.getEntries.asScala
@@ -262,15 +246,12 @@ class FakeSQS extends AmazonSQS {
       .withFailed(failed.asJava)
   }
 
-  /** @inheritdoc */
   override def addPermission(request: AddPermissionRequest) =
     throw new UnsupportedOperationException
 
-  /** @inheritdoc */
   override def removePermission(request: RemovePermissionRequest) =
     throw new UnsupportedOperationException
 
-  /** @inheritdoc */
   override def shutdown() {
     synchronized {
       if (isShutdown)
@@ -283,7 +264,6 @@ class FakeSQS extends AmazonSQS {
     }
   }
 
-  /** @inheritdoc */
   override def getCachedResponseMetadata(request: AmazonWebServiceRequest) =
     throw new UnsupportedOperationException
 

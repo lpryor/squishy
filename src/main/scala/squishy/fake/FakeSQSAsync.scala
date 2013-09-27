@@ -36,139 +36,108 @@ class FakeSQSAsync extends FakeSQS with AmazonSQSAsync {
   /** The executor used to schedule requests. */
   val executor = Executors.newCachedThreadPool()
 
-  /** @inheritdoc */
   override def createQueueAsync(request: CreateQueueRequest) =
     submit(createQueue, request)
 
-  /** @inheritdoc */
   override def createQueueAsync(
     request: CreateQueueRequest, handler: AsyncHandler[CreateQueueRequest, CreateQueueResult]) =
     submit(createQueue, request, handler)
 
-  /** @inheritdoc */
   override def listQueuesAsync(request: ListQueuesRequest) =
     submit(listQueues, request)
 
-  /** @inheritdoc */
   override def listQueuesAsync(request: ListQueuesRequest, handler: AsyncHandler[ListQueuesRequest, ListQueuesResult]) =
     submit(listQueues, request, handler)
 
-  /** @inheritdoc */
   override def deleteQueueAsync(request: DeleteQueueRequest) =
     submitVoid(deleteQueue, request)
 
-  /** @inheritdoc */
   override def deleteQueueAsync(request: DeleteQueueRequest, handler: AsyncHandler[DeleteQueueRequest, Void]) =
     submitVoid(deleteQueue, request, handler)
 
-  /** @inheritdoc */
   override def getQueueUrlAsync(request: GetQueueUrlRequest) =
     submit(getQueueUrl, request)
 
-  /** @inheritdoc */
   override def getQueueUrlAsync(
     request: GetQueueUrlRequest, handler: AsyncHandler[GetQueueUrlRequest, GetQueueUrlResult]) =
     submit(getQueueUrl, request, handler)
 
-  /** @inheritdoc */
   override def getQueueAttributesAsync(request: GetQueueAttributesRequest) =
     submit(getQueueAttributes, request)
 
-  /** @inheritdoc */
   override def getQueueAttributesAsync(
     request: GetQueueAttributesRequest, handler: AsyncHandler[GetQueueAttributesRequest, GetQueueAttributesResult]) =
     submit(getQueueAttributes, request, handler)
 
-  /** @inheritdoc */
   override def setQueueAttributesAsync(request: SetQueueAttributesRequest) =
     submitVoid(setQueueAttributes, request)
 
-  /** @inheritdoc */
   override def setQueueAttributesAsync(
     request: SetQueueAttributesRequest, handler: AsyncHandler[SetQueueAttributesRequest, Void]) =
     submitVoid(setQueueAttributes, request, handler)
 
-  /** @inheritdoc */
   override def sendMessageAsync(request: SendMessageRequest) =
     submit(sendMessage, request)
 
-  /** @inheritdoc */
   override def sendMessageAsync(
     request: SendMessageRequest, handler: AsyncHandler[SendMessageRequest, SendMessageResult]) =
     submit(sendMessage, request, handler)
 
-  /** @inheritdoc */
   override def sendMessageBatchAsync(request: SendMessageBatchRequest) =
     submit(sendMessageBatch, request)
 
-  /** @inheritdoc */
   override def sendMessageBatchAsync(
     request: SendMessageBatchRequest, handler: AsyncHandler[SendMessageBatchRequest, SendMessageBatchResult]) =
     submit(sendMessageBatch, request, handler)
 
-  /** @inheritdoc */
   override def receiveMessageAsync(request: ReceiveMessageRequest) =
     submit(receiveMessage, request)
 
-  /** @inheritdoc */
   override def receiveMessageAsync(
     request: ReceiveMessageRequest, handler: AsyncHandler[ReceiveMessageRequest, ReceiveMessageResult]) =
     submit(receiveMessage, request, handler)
 
-  /** @inheritdoc */
   override def changeMessageVisibilityAsync(request: ChangeMessageVisibilityRequest) =
     submitVoid(changeMessageVisibility, request)
 
-  /** @inheritdoc */
   override def changeMessageVisibilityAsync(
     request: ChangeMessageVisibilityRequest, handler: AsyncHandler[ChangeMessageVisibilityRequest, Void]) =
     submitVoid(changeMessageVisibility, request, handler)
 
-  /** @inheritdoc */
   override def changeMessageVisibilityBatchAsync(request: ChangeMessageVisibilityBatchRequest) =
     submit(changeMessageVisibilityBatch, request)
 
-  /** @inheritdoc */
   override def changeMessageVisibilityBatchAsync(
     request: ChangeMessageVisibilityBatchRequest,
     handler: AsyncHandler[ChangeMessageVisibilityBatchRequest, ChangeMessageVisibilityBatchResult]) =
     submit(changeMessageVisibilityBatch, request, handler)
 
-  /** @inheritdoc */
   override def deleteMessageAsync(request: DeleteMessageRequest) =
     submitVoid(deleteMessage, request)
 
-  /** @inheritdoc */
   override def deleteMessageAsync(request: DeleteMessageRequest, handler: AsyncHandler[DeleteMessageRequest, Void]) =
     submitVoid(deleteMessage, request, handler)
 
-  /** @inheritdoc */
   override def deleteMessageBatchAsync(request: DeleteMessageBatchRequest) =
     submit(deleteMessageBatch, request)
 
-  /** @inheritdoc */
   override def deleteMessageBatchAsync(
     request: DeleteMessageBatchRequest, handler: AsyncHandler[DeleteMessageBatchRequest, DeleteMessageBatchResult]) =
     submit(deleteMessageBatch, request, handler)
 
-  /** @inheritdoc */
   override def addPermissionAsync(request: AddPermissionRequest) =
     submit(addPermission, request)
 
-  /** @inheritdoc */
   override def addPermissionAsync(request: AddPermissionRequest, handler: AsyncHandler[AddPermissionRequest, Void]) =
     submit(addPermission, request, handler)
 
-  /** @inheritdoc */
   override def removePermissionAsync(request: RemovePermissionRequest) =
     submit(removePermission, request)
 
-  /** @inheritdoc */
   override def removePermissionAsync(
     request: RemovePermissionRequest, handler: AsyncHandler[RemovePermissionRequest, Void]) =
     submit(removePermission, request, handler)
 
-  /** @inheritdoc */
   override protected def dispose() {
     super.dispose()
     executor.shutdown()
