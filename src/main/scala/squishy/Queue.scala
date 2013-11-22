@@ -16,8 +16,8 @@
  */
 package squishy
 
-import collection.JavaConverters._
-
+import scala.collection.JavaConverters._
+import atmos.retries.{ TerminationPolicy, RetryPolicy }
 import com.amazonaws.services.sqs.AmazonSQS
 import com.amazonaws.services.sqs.model._
 
@@ -58,7 +58,7 @@ trait Queue[M] {
   lazy val queueOwner: Option[String] = None
 
   /** A strategy for handling errors when interacting with SQS. Defaults to [[squishy.RetryPolicy.Never]]. */
-  lazy val retryPolicy: RetryPolicy = RetryPolicy.Never
+  lazy val retryPolicy: RetryPolicy = Queue.defaultRetryPolicy
 
   /** The cached queue URL. */
   @volatile
@@ -304,6 +304,9 @@ object Queue extends Attributes {
 
   /** The queue-specific mutable attribute type. */
   type MutableAttribute[T] = (MutableKey[T], T)
+  
+  /** A default retry policy that never retries. */
+  val defaultRetryPolicy = RetryPolicy(TerminationPolicy.LimitNumberOfAttempts(1))
 
   /** The queue-specific attribute keys. */
   override val keys = Seq(
