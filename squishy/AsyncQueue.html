@@ -1,0 +1,1028 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+        <head>
+          <title>AsyncQueue - squishy.AsyncQueue</title>
+          <meta name="description" content="AsyncQueue - squishy.AsyncQueue" />
+          <meta name="keywords" content="AsyncQueue squishy.AsyncQueue" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../index.html';
+            var hash = 'squishy.AsyncQueue';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="type">
+      <div id="definition">
+        <img src="../lib/trait_big.png" />
+        <p id="owner"><a href="package.html" class="extype" name="squishy">squishy</a></p>
+        <h1>AsyncQueue</h1>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <span class="name">AsyncQueue</span><span class="tparams">[<span name="M">M</span>]</span><span class="result"> extends <a href="Queue.html" class="extype" name="squishy.Queue">Queue</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A wrapper around an asynchronous SNS queue that supports idiomatic Scala.</p><p>Note: implementations will transparently acquire and cache this queue's URL when required. See the note about queue
+URLs in the class description of <a href="Queue.html" class="extype" name="squishy.Queue">squishy.Queue</a>.
+</p></div><dl class="paramcmts block"><dt class="tparam">M</dt><dd class="cmt"><p>The type of message that can be sent to and received from this queue.
+</p></dd></dl><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="squishy.AsyncQueue"><span>AsyncQueue</span></li><li class="in" name="squishy.Queue"><span>Queue</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="squishy.Queue.BatchEntry" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="BatchEntry[-E]extendsE=&gt;(M,Int)"></a>
+      <a id="BatchEntry[-E]:BatchEntry[E]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Queue$BatchEntry.html"><span class="name">BatchEntry</span></a><span class="tparams">[<span name="E">-E</span>]</span><span class="result"> extends (<span class="extype" name="squishy.Queue.BatchEntry.E">E</span>) ⇒ (<span class="extype" name="squishy.Queue.M">M</span>, <span class="extype" name="scala.Int">Int</span>)</span>
+      </span>
+      </h4>
+      <p class="comment cmt">Base class for type classes that identify entries in batch operations.</p>
+    </li></ol>
+            </div>
+
+        <div id="values" class="values members">
+              <h3>Abstract Value Members</h3>
+              <ol><li name="squishy.AsyncQueue#executionContext" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="executionContext:scala.concurrent.ExecutionContext"></a>
+      <a id="executionContext:ExecutionContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">implicit abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">executionContext</span><span class="result">: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">The execution context to schedule asynchronous operations with.</p>
+    </li><li name="squishy.Queue#messageMapper" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="messageMapper:squishy.Mapper[M]"></a>
+      <a id="messageMapper:Mapper[M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">messageMapper</span><span class="result">: <a href="Mapper.html" class="extype" name="squishy.Mapper">Mapper</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">The strategy for encoding and decoding message objects of type <code>M</code>.</p><div class="fullcomment"><div class="comment cmt"><p>The strategy for encoding and decoding message objects of type <code>M</code>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#queueName" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="queueName:String"></a>
+      <a id="queueName:String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">queueName</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">The name of the queue to be accessed in the Amazon SQS system.</p><div class="fullcomment"><div class="comment cmt"><p>The name of the queue to be accessed in the Amazon SQS system.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.AsyncQueue#sqsClient" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="sqsClient:com.amazonaws.services.sqs.AmazonSQSAsync"></a>
+      <a id="sqsClient:AmazonSQSAsync"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sqsClient</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.AmazonSQSAsync">AmazonSQSAsync</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt"> User-provided, pre-configured SQS client implementation.</p><div class="fullcomment"><div class="comment cmt"><p> User-provided, pre-configured SQS client implementation. .</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="squishy.AsyncQueue">AsyncQueue</a> → <a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li></ol>
+            </div>
+
+        <div id="values" class="values members">
+              <h3>Concrete Value Members</h3>
+              <ol><li name="scala.AnyRef#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:AnyRef):Boolean"></a>
+      <a id="!=(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#!=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="!=(x$1:Any):Boolean"></a>
+      <a id="!=(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef###" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="##():Int"></a>
+      <a id="##():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:AnyRef):Boolean"></a>
+      <a id="==(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.Any#==" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="==(x$1:Any):Boolean"></a>
+      <a id="==(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="squishy.Queue.BatchEntry" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BatchEntry"></a>
+      <a id="BatchEntry:BatchEntry"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Queue$BatchEntry$.html"><span class="name">BatchEntry</span></a>
+      </span>
+      </h4>
+      <p class="comment cmt">Definitions of the supported batch entry type classes.</p>
+    </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="asInstanceOf[T0]:T0"></a>
+      <a id="asInstanceOf[T0]:T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="squishy.AsyncQueue#attributesAsync" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="attributesAsync(keys:squishy.Queue.Key[_]*):scala.concurrent.Future[squishy.Queue.AttributeSet]"></a>
+      <a id="attributesAsync(Key[_]*):Future[Queue.AttributeSet]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">attributesAsync</span><span class="params">(<span name="keys">keys: <a href="Queue$.html#Key[T]=squishy.Queue.KeyImpl[T]" class="extmbr" name="squishy.Queue.Key">Key</a>[_]*</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<a href="Queue$.html#AttributeSetextendsAnyRef" class="extmbr" name="squishy.Attributes.AttributeSet">Queue.AttributeSet</a>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns the specified attributes of this queue if it exists.</p><div class="fullcomment"><div class="comment cmt"><p>Returns the specified attributes of this queue if it exists.
+</p></div><dl class="paramcmts block"><dt class="param">keys</dt><dd class="cmt"><p>The keys that identify the attributes to return.
+</p></dd></dl></div>
+    </li><li name="squishy.AsyncQueue#attributesAsync" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="attributesAsync:scala.concurrent.Future[squishy.Queue.AttributeSet]"></a>
+      <a id="attributesAsync:Future[Queue.AttributeSet]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">attributesAsync</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<a href="Queue$.html#AttributeSetextendsAnyRef" class="extmbr" name="squishy.Attributes.AttributeSet">Queue.AttributeSet</a>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns all of the attributes of this queue if it exists.</p>
+    </li><li name="squishy.AsyncQueue#attributesAsync_=" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="attributesAsync_=(attributes:Seq[squishy.Queue.MutableAttribute[_]]):scala.concurrent.Future[Unit]"></a>
+      <a id="attributesAsync_=(Seq[MutableAttribute[_]]):Future[Unit]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: attributesAsync_$eq" class="name">attributesAsync_=</span><span class="params">(<span name="attributes">attributes: <span class="extype" name="scala.Seq">Seq</span>[<a href="Queue$.html#MutableAttribute[T]=(squishy.Queue.MutableKey[T],T)" class="extmbr" name="squishy.Queue.MutableAttribute">MutableAttribute</a>[_]]</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sets the attributes of this queue, throwing an exception if it does not exist.</p><div class="fullcomment"><div class="comment cmt"><p>Sets the attributes of this queue, throwing an exception if it does not exist.
+</p></div><dl class="paramcmts block"><dt class="param">attributes</dt><dd class="cmt"><p>The attributes to configure for this queue.
+</p></dd></dl></div>
+    </li><li name="squishy.Queue#changeMessageVisibilityBatchResultToMessages" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="changeMessageVisibilityBatchResultToMessages(result:com.amazonaws.services.sqs.model.ChangeMessageVisibilityBatchResult,entries:Seq[(squishy.Message.Receipt[M],Int)]):Seq[squishy.Message[M]]"></a>
+      <a id="changeMessageVisibilityBatchResultToMessages(ChangeMessageVisibilityBatchResult,Seq[(Receipt[M],Int)]):Seq[Message[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeMessageVisibilityBatchResultToMessages</span><span class="params">(<span name="result">result: <span class="extype" name="com.amazonaws.services.sqs.model.ChangeMessageVisibilityBatchResult">ChangeMessageVisibilityBatchResult</span></span>, <span name="entries">entries: <span class="extype" name="scala.Seq">Seq</span>[(<a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>], <span class="extype" name="scala.Int">Int</span>)]</span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="Message.html" class="extype" name="squishy.Message">Message</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>ChangeMessageVisibilityBatchResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>ChangeMessageVisibilityBatchResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#changeMessageVisibilityResultToMessage" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="changeMessageVisibilityResultToMessage(receipt:squishy.Message.Receipt[M]):squishy.Message.Changed[M]"></a>
+      <a id="changeMessageVisibilityResultToMessage(Receipt[M]):Changed[M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeMessageVisibilityResultToMessage</span><span class="params">(<span name="receipt">receipt: <a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>)</span><span class="result">: <a href="Message$$Changed.html" class="extype" name="squishy.Message.Changed">Changed</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that handles the result of a <code>ChangeMessageVisibilityRequest</code> operation.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that handles the result of a <code>ChangeMessageVisibilityRequest</code> operation.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.AsyncQueue#changeVisibilityAsync" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="changeVisibilityAsync(receipt:squishy.Message.Receipt[M],visibilityTimeout:Int):scala.concurrent.Future[squishy.Message.Changed[M]]"></a>
+      <a id="changeVisibilityAsync(Receipt[M],Int):Future[Changed[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeVisibilityAsync</span><span class="params">(<span name="receipt">receipt: <a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>, <span name="visibilityTimeout">visibilityTimeout: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<a href="Message$$Changed.html" class="extype" name="squishy.Message.Changed">Changed</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Attempts to extend the time that a message is invisible to other consumers.</p><div class="fullcomment"><div class="comment cmt"><p>Attempts to extend the time that a message is invisible to other consumers.
+</p></div><dl class="paramcmts block"><dt class="param">receipt</dt><dd class="cmt"><p>The receipt of the message to modify the visibility of.</p></dd><dt class="param">visibilityTimeout</dt><dd class="cmt"><p>The number of seconds to extends the message's visibility timeout.
+</p></dd></dl></div>
+    </li><li name="squishy.AsyncQueue#changeVisibilityBatchAsync" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="changeVisibilityBatchAsync(entries:(squishy.Message.Receipt[M],Int)*):scala.concurrent.Future[Seq[squishy.Message[M]]]"></a>
+      <a id="changeVisibilityBatchAsync((Receipt[M],Int)*):Future[Seq[Message[M]]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">changeVisibilityBatchAsync</span><span class="params">(<span name="entries">entries: (<a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>], <span class="extype" name="scala.Int">Int</span>)*</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Seq">Seq</span>[<a href="Message.html" class="extype" name="squishy.Message">Message</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Attempts to extend the time that a batch of messages are invisible to other consumers.</p><div class="fullcomment"><div class="comment cmt"><p>Attempts to extend the time that a batch of messages are invisible to other consumers.
+</p></div><dl class="paramcmts block"><dt class="param">entries</dt><dd class="cmt"><p>The entries representing the messages to change the visibility of with their new visibility timeout.
+</p></dd></dl></div>
+    </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="clone():Object"></a>
+      <a id="clone():AnyRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.CloneNotSupportedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="squishy.AsyncQueue#createQueueAsync" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="createQueueAsync(attributes:squishy.Queue.MutableAttribute[_]*):scala.concurrent.Future[Unit]"></a>
+      <a id="createQueueAsync(MutableAttribute[_]*):Future[Unit]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createQueueAsync</span><span class="params">(<span name="attributes">attributes: <a href="Queue$.html#MutableAttribute[T]=(squishy.Queue.MutableKey[T],T)" class="extmbr" name="squishy.Queue.MutableAttribute">MutableAttribute</a>[_]*</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Creates this queue in the cloud if it does not already exist.</p><div class="fullcomment"><div class="comment cmt"><p>Creates this queue in the cloud if it does not already exist.</p><p>All unspecified attributes will default to the values specified by Amazon SQS.
+</p></div><dl class="paramcmts block"><dt class="param">attributes</dt><dd class="cmt"><p>The attributes to configure for this queue.
+</p></dd></dl></div>
+    </li><li name="squishy.Queue#createQueueResultToQueueUrl" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="createQueueResultToQueueUrl(result:com.amazonaws.services.sqs.model.CreateQueueResult):String"></a>
+      <a id="createQueueResultToQueueUrl(CreateQueueResult):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createQueueResultToQueueUrl</span><span class="params">(<span name="result">result: <span class="extype" name="com.amazonaws.services.sqs.model.CreateQueueResult">CreateQueueResult</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>CreateQueueResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>CreateQueueResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.AsyncQueue#deleteAsync" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="deleteAsync(receipt:squishy.Message.Receipt[M]):scala.concurrent.Future[squishy.Message.Deleted[M]]"></a>
+      <a id="deleteAsync(Receipt[M]):Future[Deleted[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteAsync</span><span class="params">(<span name="receipt">receipt: <a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<a href="Message$$Deleted.html" class="extype" name="squishy.Message.Deleted">Deleted</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Attempts to delete a message from this queue.</p><div class="fullcomment"><div class="comment cmt"><p>Attempts to delete a message from this queue.
+</p></div><dl class="paramcmts block"><dt class="param">receipt</dt><dd class="cmt"><p>The receipt of the message to delete from the queue.
+</p></dd></dl></div>
+    </li><li name="squishy.AsyncQueue#deleteBatchAsync" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="deleteBatchAsync(receipts:squishy.Message.Receipt[M]*):scala.concurrent.Future[Seq[squishy.Message[M]]]"></a>
+      <a id="deleteBatchAsync(Receipt[M]*):Future[Seq[Message[M]]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteBatchAsync</span><span class="params">(<span name="receipts">receipts: <a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]*</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Seq">Seq</span>[<a href="Message.html" class="extype" name="squishy.Message">Message</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Attempts to delete a batch of messages from this queue.</p><div class="fullcomment"><div class="comment cmt"><p>Attempts to delete a batch of messages from this queue.
+</p></div><dl class="paramcmts block"><dt class="param">receipts</dt><dd class="cmt"><p>The receipts of the messages to delete from the queue.
+</p></dd></dl></div>
+    </li><li name="squishy.Queue#deleteMessageBatchResultToMessages" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="deleteMessageBatchResultToMessages(result:com.amazonaws.services.sqs.model.DeleteMessageBatchResult,receipts:Seq[squishy.Message.Receipt[M]]):Seq[squishy.Message[M]]"></a>
+      <a id="deleteMessageBatchResultToMessages(DeleteMessageBatchResult,Seq[Receipt[M]]):Seq[Message[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteMessageBatchResultToMessages</span><span class="params">(<span name="result">result: <span class="extype" name="com.amazonaws.services.sqs.model.DeleteMessageBatchResult">DeleteMessageBatchResult</span></span>, <span name="receipts">receipts: <span class="extype" name="scala.Seq">Seq</span>[<a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]</span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="Message.html" class="extype" name="squishy.Message">Message</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>DeleteMessageBatchResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>DeleteMessageBatchResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#deleteMessageResultToMessage" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="deleteMessageResultToMessage(receipt:squishy.Message.Receipt[M]):squishy.Message.Deleted[M]"></a>
+      <a id="deleteMessageResultToMessage(Receipt[M]):Deleted[M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deleteMessageResultToMessage</span><span class="params">(<span name="receipt">receipt: <a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>)</span><span class="result">: <a href="Message$$Deleted.html" class="extype" name="squishy.Message.Deleted">Deleted</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that handles the result of a <code>DeleteMessageRequest</code> operation.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that handles the result of a <code>DeleteMessageRequest</code> operation.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.AsyncQueue#deleteQueueAsync_!" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="deleteQueueAsync_!():scala.concurrent.Future[Unit]"></a>
+      <a id="deleteQueueAsync_!():Future[Unit]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: deleteQueueAsync_$bang" class="name">deleteQueueAsync_!</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Deletes this queue in the cloud if it exists.</p>
+    </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="eq(x$1:AnyRef):Boolean"></a>
+      <a id="eq(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="squishy.AsyncQueue#existsAsync" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="existsAsync:scala.concurrent.Future[Boolean]"></a>
+      <a id="existsAsync:Future[Boolean]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">existsAsync</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Boolean">Boolean</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns true if this queue exists in the cloud.</p>
+    </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="finalize():Unit"></a>
+      <a id="finalize():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../java$lang.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="symbol">classOf[java.lang.Throwable]</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getClass():Class[_]"></a>
+      <a id="getClass():Class[_]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="squishy.Queue#getQueueAttributesResultToAttributeSet" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getQueueAttributesResultToAttributeSet(result:com.amazonaws.services.sqs.model.GetQueueAttributesResult):squishy.Queue.AttributeSet"></a>
+      <a id="getQueueAttributesResultToAttributeSet(GetQueueAttributesResult):Queue.AttributeSet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getQueueAttributesResultToAttributeSet</span><span class="params">(<span name="result">result: <span class="extype" name="com.amazonaws.services.sqs.model.GetQueueAttributesResult">GetQueueAttributesResult</span></span>)</span><span class="result">: <a href="Queue$.html#AttributeSetextendsAnyRef" class="extmbr" name="squishy.Attributes.AttributeSet">Queue.AttributeSet</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts from a <code>GetQueueAttributesResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts from a <code>GetQueueAttributesResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#getQueueUrlResultToQueueUrl" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getQueueUrlResultToQueueUrl(result:com.amazonaws.services.sqs.model.GetQueueUrlResult):String"></a>
+      <a id="getQueueUrlResultToQueueUrl(GetQueueUrlResult):String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getQueueUrlResultToQueueUrl</span><span class="params">(<span name="result">result: <span class="extype" name="com.amazonaws.services.sqs.model.GetQueueUrlResult">GetQueueUrlResult</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>GetQueueUrlResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>GetQueueUrlResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <a id="isInstanceOf[T0]:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ne(x$1:AnyRef):Boolean"></a>
+      <a id="ne(AnyRef):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="squishy.Queue#newChangeMessageVisibilityBatchRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newChangeMessageVisibilityBatchRequest(queueUrl:String,entries:Seq[(squishy.Message.Receipt[M],Int)]):com.amazonaws.services.sqs.model.ChangeMessageVisibilityBatchRequest"></a>
+      <a id="newChangeMessageVisibilityBatchRequest(String,Seq[(Receipt[M],Int)]):ChangeMessageVisibilityBatchRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newChangeMessageVisibilityBatchRequest</span><span class="params">(<span name="queueUrl">queueUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="entries">entries: <span class="extype" name="scala.Seq">Seq</span>[(<a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>], <span class="extype" name="scala.Int">Int</span>)]</span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.ChangeMessageVisibilityBatchRequest">ChangeMessageVisibilityBatchRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>ChangeMessageVisibilityBatchRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>ChangeMessageVisibilityBatchRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newChangeMessageVisibilityRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newChangeMessageVisibilityRequest(queueUrl:String,receipt:squishy.Message.Receipt[M],visibilityTimeout:Int):com.amazonaws.services.sqs.model.ChangeMessageVisibilityRequest"></a>
+      <a id="newChangeMessageVisibilityRequest(String,Receipt[M],Int):ChangeMessageVisibilityRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newChangeMessageVisibilityRequest</span><span class="params">(<span name="queueUrl">queueUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="receipt">receipt: <a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>, <span name="visibilityTimeout">visibilityTimeout: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.ChangeMessageVisibilityRequest">ChangeMessageVisibilityRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>ChangeMessageVisibilityRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>ChangeMessageVisibilityRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newCreateQueueRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newCreateQueueRequest(attributes:Seq[squishy.Queue.MutableAttribute[_]]):com.amazonaws.services.sqs.model.CreateQueueRequest"></a>
+      <a id="newCreateQueueRequest(Seq[MutableAttribute[_]]):CreateQueueRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newCreateQueueRequest</span><span class="params">(<span name="attributes">attributes: <span class="extype" name="scala.Seq">Seq</span>[<a href="Queue$.html#MutableAttribute[T]=(squishy.Queue.MutableKey[T],T)" class="extmbr" name="squishy.Queue.MutableAttribute">MutableAttribute</a>[_]]</span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.CreateQueueRequest">CreateQueueRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>CreateQueueRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>CreateQueueRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newDeleteMessageBatchRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newDeleteMessageBatchRequest(queueUrl:String,receipts:Seq[squishy.Message.Receipt[M]]):com.amazonaws.services.sqs.model.DeleteMessageBatchRequest"></a>
+      <a id="newDeleteMessageBatchRequest(String,Seq[Receipt[M]]):DeleteMessageBatchRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newDeleteMessageBatchRequest</span><span class="params">(<span name="queueUrl">queueUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="receipts">receipts: <span class="extype" name="scala.Seq">Seq</span>[<a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]</span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.DeleteMessageBatchRequest">DeleteMessageBatchRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>DeleteMessageBatchRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>DeleteMessageBatchRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newDeleteMessageRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newDeleteMessageRequest(queueUrl:String,receipt:squishy.Message.Receipt[M]):com.amazonaws.services.sqs.model.DeleteMessageRequest"></a>
+      <a id="newDeleteMessageRequest(String,Receipt[M]):DeleteMessageRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newDeleteMessageRequest</span><span class="params">(<span name="queueUrl">queueUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="receipt">receipt: <a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.DeleteMessageRequest">DeleteMessageRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>DeleteMessageRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>DeleteMessageRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newDeleteQueueRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newDeleteQueueRequest(queueUrl:String):com.amazonaws.services.sqs.model.DeleteQueueRequest"></a>
+      <a id="newDeleteQueueRequest(String):DeleteQueueRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newDeleteQueueRequest</span><span class="params">(<span name="queueUrl">queueUrl: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.DeleteQueueRequest">DeleteQueueRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>DeleteQueueRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>DeleteQueueRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newGetQueueAttributesRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newGetQueueAttributesRequest(queueUrl:String,keys:squishy.Queue.Key[_]*):com.amazonaws.services.sqs.model.GetQueueAttributesRequest"></a>
+      <a id="newGetQueueAttributesRequest(String,Key[_]*):GetQueueAttributesRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newGetQueueAttributesRequest</span><span class="params">(<span name="queueUrl">queueUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="keys">keys: <a href="Queue$.html#Key[T]=squishy.Queue.KeyImpl[T]" class="extmbr" name="squishy.Queue.Key">Key</a>[_]*</span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.GetQueueAttributesRequest">GetQueueAttributesRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>GetQueueAttributesRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>GetQueueAttributesRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newGetQueueUrlRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newGetQueueUrlRequest():com.amazonaws.services.sqs.model.GetQueueUrlRequest"></a>
+      <a id="newGetQueueUrlRequest():GetQueueUrlRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newGetQueueUrlRequest</span><span class="params">()</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.GetQueueUrlRequest">GetQueueUrlRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>GetQueueUrlRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>GetQueueUrlRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newReceiveMessageRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newReceiveMessageRequest(queueUrl:String,maxNumberOfMessages:Int,visibilityTimeout:Int,waitTimeSeconds:Int,attributes:Seq[squishy.Message.Key[_]]):com.amazonaws.services.sqs.model.ReceiveMessageRequest"></a>
+      <a id="newReceiveMessageRequest(String,Int,Int,Int,Seq[Key[_]]):ReceiveMessageRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newReceiveMessageRequest</span><span class="params">(<span name="queueUrl">queueUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="maxNumberOfMessages">maxNumberOfMessages: <span class="extype" name="scala.Int">Int</span></span>, <span name="visibilityTimeout">visibilityTimeout: <span class="extype" name="scala.Int">Int</span></span>, <span name="waitTimeSeconds">waitTimeSeconds: <span class="extype" name="scala.Int">Int</span></span>, <span name="attributes">attributes: <span class="extype" name="scala.Seq">Seq</span>[<a href="Message$.html#Key[T]=squishy.Message.KeyImpl[T]" class="extmbr" name="squishy.Message.Key">Key</a>[_]]</span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.ReceiveMessageRequest">ReceiveMessageRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>ReceiveMessageRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>ReceiveMessageRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newSendMessageBatchRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newSendMessageBatchRequest(queueUrl:String,entries:Seq[(M,Int)]):com.amazonaws.services.sqs.model.SendMessageBatchRequest"></a>
+      <a id="newSendMessageBatchRequest(String,Seq[(M,Int)]):SendMessageBatchRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newSendMessageBatchRequest</span><span class="params">(<span name="queueUrl">queueUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="entries">entries: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="squishy.AsyncQueue.M">M</span>, <span class="extype" name="scala.Int">Int</span>)]</span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.SendMessageBatchRequest">SendMessageBatchRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>SendMessageBatchRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>SendMessageBatchRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newSendMessageRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newSendMessageRequest(queueUrl:String,msg:M,delaySeconds:Int):com.amazonaws.services.sqs.model.SendMessageRequest"></a>
+      <a id="newSendMessageRequest(String,M,Int):SendMessageRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newSendMessageRequest</span><span class="params">(<span name="queueUrl">queueUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="msg">msg: <span class="extype" name="squishy.AsyncQueue.M">M</span></span>, <span name="delaySeconds">delaySeconds: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.SendMessageRequest">SendMessageRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>SendMessageRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>SendMessageRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#newSetQueueAttributesRequest" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newSetQueueAttributesRequest(queueUrl:String,attributes:Seq[squishy.Queue.MutableAttribute[_]]):com.amazonaws.services.sqs.model.SetQueueAttributesRequest"></a>
+      <a id="newSetQueueAttributesRequest(String,Seq[MutableAttribute[_]]):SetQueueAttributesRequest"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newSetQueueAttributesRequest</span><span class="params">(<span name="queueUrl">queueUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="attributes">attributes: <span class="extype" name="scala.Seq">Seq</span>[<a href="Queue$.html#MutableAttribute[T]=(squishy.Queue.MutableKey[T],T)" class="extmbr" name="squishy.Queue.MutableAttribute">MutableAttribute</a>[_]]</span>)</span><span class="result">: <span class="extype" name="com.amazonaws.services.sqs.model.SetQueueAttributesRequest">SetQueueAttributesRequest</span></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that constructs a <code>SetQueueAttributesRequest</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that constructs a <code>SetQueueAttributesRequest</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notify():Unit"></a>
+      <a id="notify():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#notifyAll" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="notifyAll():Unit"></a>
+      <a id="notifyAll():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="squishy.Queue#queueOwner" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="queueOwner:Option[String]"></a>
+      <a id="queueOwner:Option[String]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">queueOwner</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">The AWS account ID of the owner of the queue to access.</p><div class="fullcomment"><div class="comment cmt"><p>The AWS account ID of the owner of the queue to access. Defaults to <code>scala.None</code>, which will use the account
+associated with <code>sqsClient</code>.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.AsyncQueue#queueUrlAsync" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="queueUrlAsync:scala.concurrent.Future[Option[String]]"></a>
+      <a id="queueUrlAsync:Future[Option[String]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">queueUrlAsync</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Returns the URL of this queue if it exists.</p>
+    </li><li name="squishy.AsyncQueue#receiveAsync" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="receiveAsync(maxNumberOfMessages:Int,visibilityTimeout:Int,waitTimeSeconds:Int,attributes:Seq[squishy.Message.Key[_]]):scala.concurrent.Future[Seq[squishy.Message.Receipt[M]]]"></a>
+      <a id="receiveAsync(Int,Int,Int,Seq[Key[_]]):Future[Seq[Receipt[M]]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">receiveAsync</span><span class="params">(<span name="maxNumberOfMessages">maxNumberOfMessages: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">1</span></span>, <span name="visibilityTimeout">visibilityTimeout: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">1</span></span>, <span name="waitTimeSeconds">waitTimeSeconds: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">1</span></span>, <span name="attributes">attributes: <span class="extype" name="scala.Seq">Seq</span>[<a href="Message$.html#Key[T]=squishy.Message.KeyImpl[T]" class="extmbr" name="squishy.Message.Key">Key</a>[_]] = <span class="symbol">Seq.empty</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Seq">Seq</span>[<a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Attempts to receive one or more messages from this queue.</p><div class="fullcomment"><div class="comment cmt"><p>Attempts to receive one or more messages from this queue.</p><p>All optional parameters of this method will default to the values specified by Amazon SQS.
+</p></div><dl class="paramcmts block"><dt class="param">maxNumberOfMessages</dt><dd class="cmt"><p>The maximum number of messages to receive.</p></dd><dt class="param">visibilityTimeout</dt><dd class="cmt"><p>The number of seconds to prevent other consumers from seeing received messages.</p></dd><dt class="param">waitTimeSeconds</dt><dd class="cmt"><p>The maximum number of seconds to wait for a message.</p></dd><dt class="param">attributes</dt><dd class="cmt"><p>The keys of the message attributes that should be returned along with the messages.
+</p></dd></dl></div>
+    </li><li name="squishy.Queue#receiveMessageResultToMessages" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="receiveMessageResultToMessages(result:com.amazonaws.services.sqs.model.ReceiveMessageResult):Seq[squishy.Message.Receipt[M]]"></a>
+      <a id="receiveMessageResultToMessages(ReceiveMessageResult):Seq[Receipt[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">receiveMessageResultToMessages</span><span class="params">(<span name="result">result: <span class="extype" name="com.amazonaws.services.sqs.model.ReceiveMessageResult">ReceiveMessageResult</span></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="Message$$Receipt.html" class="extype" name="squishy.Message.Receipt">Receipt</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>ReceiveMessageResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>ReceiveMessageResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#retryPolicy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="retryPolicy:squishy.RetryPolicy"></a>
+      <a id="retryPolicy:RetryPolicy"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">retryPolicy</span><span class="result">: <a href="RetryPolicy.html" class="extype" name="squishy.RetryPolicy">RetryPolicy</a></span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">A strategy for handling errors when interacting with SQS.</p><div class="fullcomment"><div class="comment cmt"><p>A strategy for handling errors when interacting with SQS. Defaults to <a href="RetryPolicy$$Never$.html" class="extype" name="squishy.RetryPolicy.Never">squishy.RetryPolicy.Never</a>.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.AsyncQueue#sendAsync" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="sendAsync(msg:M,delaySeconds:Int):scala.concurrent.Future[squishy.Message.Sent[M]]"></a>
+      <a id="sendAsync(M,Int):Future[Sent[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sendAsync</span><span class="params">(<span name="msg">msg: <span class="extype" name="squishy.AsyncQueue.M">M</span></span>, <span name="delaySeconds">delaySeconds: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">1</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<a href="Message$$Sent.html" class="extype" name="squishy.Message.Sent">Sent</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sends a message to this queue.</p><div class="fullcomment"><div class="comment cmt"><p>Sends a message to this queue.</p><p>All optional parameters of this method will default to the values specified by Amazon SQS.
+</p></div><dl class="paramcmts block"><dt class="param">msg</dt><dd class="cmt"><p>The body of the message to send.</p></dd><dt class="param">delaySeconds</dt><dd class="cmt"><p>The number of seconds to delay message availability.
+</p></dd></dl></div>
+    </li><li name="squishy.AsyncQueue#sendBatchAsync" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="sendBatchAsync[E](entries:E*)(implicitevidence$1:AsyncQueue.this.BatchEntry[E]):scala.concurrent.Future[Seq[squishy.Message[M]]]"></a>
+      <a id="sendBatchAsync[E](E*)(BatchEntry[E]):Future[Seq[Message[M]]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sendBatchAsync</span><span class="tparams">[<span name="E">E</span>]</span><span class="params">(<span name="entries">entries: <span class="extype" name="squishy.AsyncQueue.sendBatchAsync.E">E</span>*</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="#BatchEntry[-E]extendsE=&gt;(M,Int)" class="extmbr" name="squishy.Queue.BatchEntry">BatchEntry</a>[<span class="extype" name="squishy.AsyncQueue.sendBatchAsync.E">E</span>]</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Seq">Seq</span>[<a href="Message.html" class="extype" name="squishy.Message">Message</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Sends a batch of messages to this queue.</p><div class="fullcomment"><div class="comment cmt"><p>Sends a batch of messages to this queue.</p><p>All optional parameters of this method will default to the values specified by Amazon SQS.
+</p></div><dl class="paramcmts block"><dt class="param">entries</dt><dd class="cmt"><p>The entries representing the messages to send. These must be of type <code>M</code> for immediate messages or
+<code>(M, Int)</code> for messages with an initial delay.
+</p></dd></dl></div>
+    </li><li name="squishy.Queue#sendMessageBatchResultToMessages" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="sendMessageBatchResultToMessages(result:com.amazonaws.services.sqs.model.SendMessageBatchResult,entries:Seq[(M,Int)]):Seq[squishy.Message[M]]"></a>
+      <a id="sendMessageBatchResultToMessages(SendMessageBatchResult,Seq[(M,Int)]):Seq[Message[M]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sendMessageBatchResultToMessages</span><span class="params">(<span name="result">result: <span class="extype" name="com.amazonaws.services.sqs.model.SendMessageBatchResult">SendMessageBatchResult</span></span>, <span name="entries">entries: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="squishy.AsyncQueue.M">M</span>, <span class="extype" name="scala.Int">Int</span>)]</span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="Message.html" class="extype" name="squishy.Message">Message</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>SendMessageBatchResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>SendMessageBatchResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="squishy.Queue#sendMessageResultToMessage" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="sendMessageResultToMessage(result:com.amazonaws.services.sqs.model.SendMessageResult,msg:M):squishy.Message.Sent[M]"></a>
+      <a id="sendMessageResultToMessage(SendMessageResult,M):Sent[M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sendMessageResultToMessage</span><span class="params">(<span name="result">result: <span class="extype" name="com.amazonaws.services.sqs.model.SendMessageResult">SendMessageResult</span></span>, <span name="msg">msg: <span class="extype" name="squishy.AsyncQueue.M">M</span></span>)</span><span class="result">: <a href="Message$$Sent.html" class="extype" name="squishy.Message.Sent">Sent</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</span>
+      </span>
+      </h4>
+      <p class="shortcomment cmt">Utility method that extracts a <code>SendMessageResult</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Utility method that extracts a <code>SendMessageResult</code> instance.</p></div><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="squishy.Queue">Queue</a></dd></dl></div>
+    </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
+      <a id="synchronized[T0](⇒T0):T0"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait():Unit"></a>
+      <a id="wait():Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long,x$2:Int):Unit"></a>
+      <a id="wait(Long,Int):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="wait(x$1:Long):Unit"></a>
+      <a id="wait(Long):Unit"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      </h4>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
+                <span class="name">@throws</span><span class="args">(<span>
+      
+      <span class="defval" name="classOf[java.lang.InterruptedException]">...</span>
+    </span>)</span>
+              
+        </dd></dl></div>
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        <div class="parent" name="squishy.Queue">
+              <h3>Inherited from <a href="Queue.html" class="extype" name="squishy.Queue">Queue</a>[<span class="extype" name="squishy.AsyncQueue.M">M</span>]</h3>
+            </div><div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+    </body>
+      </html>
