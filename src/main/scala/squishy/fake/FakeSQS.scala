@@ -16,6 +16,9 @@
  */
 package squishy.fake
 
+import scala.collection.JavaConverters._
+import scala.collection.mutable.HashMap
+import scala.language.implicitConversions
 import com.amazonaws.{
   AmazonClientException,
   AmazonWebServiceRequest
@@ -23,11 +26,6 @@ import com.amazonaws.{
 import com.amazonaws.regions.Region
 import com.amazonaws.services.sqs.AmazonSQS
 import com.amazonaws.services.sqs.model._
-
-import collection.JavaConverters._
-import collection.mutable.HashMap
-
-import language.implicitConversions
 
 /**
  * A simple implementation of the Amazon SQS interface for testing purposes.

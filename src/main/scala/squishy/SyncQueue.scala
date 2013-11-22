@@ -16,6 +16,7 @@
  */
 package squishy
 
+import atmos.utils.Attributes
 import com.amazonaws.services.sqs.model._
 
 /**

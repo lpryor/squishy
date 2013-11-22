@@ -18,6 +18,7 @@ package squishy
 
 import scala.collection.JavaConverters._
 import atmos.retries.{ TerminationPolicy, RetryPolicy }
+import atmos.utils.{ Attributes, Encoding }
 import com.amazonaws.services.sqs.AmazonSQS
 import com.amazonaws.services.sqs.model._
 
@@ -25,7 +26,7 @@ import com.amazonaws.services.sqs.model._
  * Base type for views onto SQS queues.
  *
  * This trait provides the common infrastructure required to interact with SQS and exposes the relevant configuration
- * parameters. When creating instances of this trait values for the `sqsClient`, `queueName` and `messageMapper`
+ * parameters. When creating instances of this trait values for the `sqsClient`, `queueName` and `messageEncoding`
  * members must be provided while `queueOwner` and `retryPolicy` are optional.
  *
  * A note about queue URLs: most SQS operations require that the caller specify a queue URL with each request. This
@@ -49,7 +50,7 @@ trait Queue[M] {
   val queueName: String
 
   /** The strategy for encoding and decoding message objects of type `M`. */
-  val messageMapper: Mapper[M]
+  val messageEncoding: Encoding[M]
 
   /**
    * The AWS account ID of the owner of the queue to access. Defaults to `scala.None`, which will use the account
@@ -57,7 +58,7 @@ trait Queue[M] {
    */
   lazy val queueOwner: Option[String] = None
 
-  /** A strategy for handling errors when interacting with SQS. Defaults to [[squishy.RetryPolicy.Never]]. */
+  /** A strategy for handling errors when interacting with SQS. Defaults to [[squishy.Queue.defaultRetryPolicy]]. */
   lazy val retryPolicy: RetryPolicy = Queue.defaultRetryPolicy
 
   /** The cached queue URL. */
@@ -109,7 +110,7 @@ trait Queue[M] {
   protected def newSendMessageRequest(queueUrl: String, msg: M, delaySeconds: Int): SendMessageRequest = {
     val request = new SendMessageRequest()
       .withQueueUrl(queueUrl)
-      .withMessageBody(messageMapper(msg))
+      .withMessageBody(messageEncoding(msg))
     if (delaySeconds >= 0) request.setDelaySeconds(delaySeconds)
     request
   }
@@ -126,7 +127,7 @@ trait Queue[M] {
         case ((msg, delaySeconds), id) =>
           val entry = new SendMessageBatchRequestEntry()
             .withId(id.toString)
-            .withMessageBody(messageMapper(msg))
+            .withMessageBody(messageEncoding(msg))
           if (delaySeconds >= 0) entry.setDelaySeconds(delaySeconds)
           entry
       }.asJava)
@@ -173,7 +174,7 @@ trait Queue[M] {
         m.getMD5OfBody,
         m.getReceiptHandle,
         Message.AttributeSet(m.getAttributes.asScala),
-        messageMapper.unapply(m.getBody))
+        messageEncoding.unapply(m.getBody))
     }
 
   /** Utility method that constructs a `ChangeMessageVisibilityRequest` instance. */
@@ -309,7 +310,7 @@ object Queue extends Attributes {
   val defaultRetryPolicy = RetryPolicy(TerminationPolicy.LimitNumberOfAttempts(1))
 
   /** The queue-specific attribute keys. */
-  override val keys = Seq(
+  override lazy val keys = Seq(
     ApproximateNumberOfMessages,
     ApproximateNumberOfMessagesDelayed,
     ApproximateNumberOfMessagesNotVisible,
@@ -335,8 +336,8 @@ object Queue extends Attributes {
    *
    * @tparam T The type of value associated with this key.
    */
-  sealed abstract class KeyImpl[T: Mapper](awsName: QueueAttributeName)
-    extends KeySupport[T](awsName.name, implicitly[Mapper[T]])
+  sealed abstract class KeyImpl[T: Encoding](awsName: QueueAttributeName)
+    extends KeySupport[T](awsName.name, implicitly[Encoding[T]])
 
   /**
    * The `ApproximateNumberOfMessages` attribute key.

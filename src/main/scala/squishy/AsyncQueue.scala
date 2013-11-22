@@ -16,14 +16,14 @@
  */
 package squishy
 
-import concurrent.{ ExecutionContext, Future, Promise }
-import language.implicitConversions
-
+import java.util.concurrent.{ Future => JFuture }
+import scala.concurrent.{ ExecutionContext, Future, Promise }
+import scala.language.implicitConversions
+import atmos.utils.Attributes
 import com.amazonaws.AmazonWebServiceRequest
 import com.amazonaws.handlers.AsyncHandler
 import com.amazonaws.services.sqs.AmazonSQSAsync
 import com.amazonaws.services.sqs.model._
-import java.util.concurrent.{ Future => JFuture }
 
 /**
  * A wrapper around an asynchronous SNS queue that supports idiomatic Scala.

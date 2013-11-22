@@ -17,9 +17,10 @@
 package squishy
 package examples
 
-import concurrent.{ Await, Future, ExecutionContext }
-import concurrent.duration._
-import io.Source
+import scala.concurrent.{ Await, Future, ExecutionContext }
+import scala.concurrent.duration._
+import scala.io.Source
+import atmos.utils.Encoding
 
 /**
  * A simple example that shows sending and receiving asynchronously.
@@ -82,7 +83,7 @@ object SendReceiveAsyncExample extends App {
 
     override implicit val executionContext = ExecutionContext.fromExecutor(sqsClient.executor)
 
-    override val messageMapper = new Mapper[MyMessage] {
+    override val messageEncoding = new Encoding[MyMessage] {
       override def apply(msg: MyMessage) = msg.text
       override def unapply(text: String) = MyMessage(text)
     }

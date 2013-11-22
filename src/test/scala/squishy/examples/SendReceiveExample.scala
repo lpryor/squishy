@@ -17,7 +17,8 @@
 package squishy
 package examples
 
-import io.Source
+import scala.io.Source
+import atmos.utils.Encoding
 
 /**
  * A simple example that shows sending and receiving in separate threads.
@@ -60,7 +61,7 @@ object SendReceiveExample extends App {
 
     override val sqsClient = new fake.FakeSQS
 
-    override val messageMapper = new Mapper[MyMessage] {
+    override val messageEncoding = new Encoding[MyMessage] {
       override def apply(msg: MyMessage) = msg.text
       override def unapply(text: String) = MyMessage(text)
     }

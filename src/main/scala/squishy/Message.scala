@@ -16,6 +16,8 @@
  */
 package squishy
 
+import atmos.utils.{ Attributes, Encoding }
+
 /**
  * Base type for objects that contain information about messages sent to and received from SQS queues.
  *
@@ -37,7 +39,7 @@ object Message extends Attributes {
   override type Key[T] = KeyImpl[T]
 
   /** The message-specific attribute keys. */
-  override val keys = Seq(
+  override lazy val keys = Seq(
     SenderId,
     ApproximateFirstReceiveTimestamp,
     ApproximateReceiveCount,
@@ -113,8 +115,8 @@ object Message extends Attributes {
    *
    * @tparam T The type of value associated with this key.
    */
-  sealed abstract class KeyImpl[T: Mapper](awsName: String)
-    extends KeySupport[T](awsName, implicitly[Mapper[T]])
+  sealed abstract class KeyImpl[T: Encoding](awsName: String)
+    extends KeySupport[T](awsName, implicitly[Encoding[T]])
 
   /**
    * The `SenderId` attribute key.

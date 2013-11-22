@@ -16,17 +16,16 @@
  */
 package squishy.fake
 
-import com.amazonaws.AmazonWebServiceRequest
-import com.amazonaws.handlers.AsyncHandler
-import com.amazonaws.services.sqs.AmazonSQSAsync
-import com.amazonaws.services.sqs.model._
-
 import java.util.concurrent.{
   Callable,
   Future,
   Executors,
   TimeUnit
 }
+import com.amazonaws.AmazonWebServiceRequest
+import com.amazonaws.handlers.AsyncHandler
+import com.amazonaws.services.sqs.AmazonSQSAsync
+import com.amazonaws.services.sqs.model._
 
 /**
  * A simple implementation of the Amazon SQS asynchronous interface for testing purposes.

@@ -16,7 +16,6 @@
  */
 package squishy.fake
 
-import collection.JavaConverters._
 import java.util.concurrent.{
   Delayed,
   DelayQueue,
@@ -24,6 +23,7 @@ import java.util.concurrent.{
 }
 import java.util.concurrent.atomic.AtomicLong
 import java.security.MessageDigest
+import scala.collection.JavaConverters._
 
 /**
  * A simple SQS queue implementation for testing purposes.
